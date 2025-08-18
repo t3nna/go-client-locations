@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "shared/proto/user;user";
+
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+}
+
+message CreateUserRequest{
+  string userId = 1;
+  string userName = 2;
+  Coordinate coordinate = 3;
+}
+
+message CreateUserResponse{
+  string userId = 1;
+  string userName = 2;
+  Coordinate coordinate = 3;
+}
+
+message Coordinate{
+  double latitude = 1;
+  double longitude = 2;
+}

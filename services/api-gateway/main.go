@@ -21,7 +21,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("POST /user/location", enableCORS(HandleUpdateUserLocation))
+	mux.HandleFunc("POST /user/create", enableCORS(HandleUpdateUserLocation))
 
 	server := &http.Server{
 		Addr:    httpAddr,

@@ -13,15 +13,39 @@ type inmemRepository struct {
 	mu    sync.RWMutex
 }
 
-func newInmemRepo() *inmemRepository {
+func NewInmemRepository() *inmemRepository {
 	return &inmemRepository{
 		users: map[string]*domain.UserModel{
-			"userId1234": {
+			"user1": {
 				UserName: "Ivan",
-				UserId:   "userId1234",
+				UserId:   "user1",
 				Coordinates: &types.Coordinate{
 					Latitude:  51.10861618949566,
 					Longitude: 17.03187985482019,
+				},
+			},
+			"user2": {
+				UserName: "Ivan",
+				UserId:   "user2",
+				Coordinates: &types.Coordinate{
+					Latitude:  51.5,
+					Longitude: 17.7,
+				},
+			},
+			"user3": {
+				UserName: "Ivan",
+				UserId:   "user3",
+				Coordinates: &types.Coordinate{
+					Latitude:  51.9,
+					Longitude: 17.0,
+				},
+			},
+			"user4": {
+				UserName: "Ivan",
+				UserId:   "user4",
+				Coordinates: &types.Coordinate{
+					Latitude:  51.32,
+					Longitude: 17.88,
 				},
 			},
 		},
