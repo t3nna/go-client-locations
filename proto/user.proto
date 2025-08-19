@@ -6,6 +6,7 @@ option go_package = "shared/proto/user;user";
 
 service UserService {
   rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
 }
 
 message CreateUserRequest{
@@ -20,7 +21,20 @@ message CreateUserResponse{
   Coordinate coordinate = 3;
 }
 
+// TODO: generate go code + add rpc for search
+message UpdateUserRequest{
+  string userName = 1;
+  Coordinate coordinate = 2;
+}
+message UpdateUserResponse{
+  string userId = 1;
+  string userName = 2;
+  Coordinate coordinate = 3;
+}
+
 message Coordinate{
   double latitude = 1;
   double longitude = 2;
 }
+
+

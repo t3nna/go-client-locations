@@ -32,11 +32,15 @@ func (s *service) CreateUser(ctx context.Context, user *domain.UserModel) (*doma
 	return s.repo.CreateUser(ctx, newUser)
 }
 func (s *service) UpdateUser(ctx context.Context, userName string, coordinates *types.Coordinate) (*domain.UserModel, error) {
-	return s.repo.UpdateUser(ctx, userName, coordinates)
 
+	return s.repo.UpdateUser(ctx, userName, coordinates)
 }
 
-func (s *service) SearchUsers(ctx context.Context, location *types.Coordinate, radius float64) (*[]domain.UserModel, error) {
-	// TODO: come up with a method to calculate users based on a radius
-	return nil, nil
+func (s *service) SearchUsers(ctx context.Context, location *types.Coordinate, radius float64) ([]*domain.UserModel, error) {
+	users, err := s.repo.GetUsers(ctx)
+	if err != nil {
+		log.Fatalf("faled to get users")
+
+	}
+	return users, nil
 }

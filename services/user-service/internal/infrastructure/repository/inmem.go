@@ -80,3 +80,14 @@ func (r *inmemRepository) UpdateUser(ctx context.Context, userName string, coord
 
 	return nil, fmt.Errorf("failde to find user in DB")
 }
+
+func (r *inmemRepository) GetUsers(ctx context.Context) ([]*domain.UserModel, error) {
+	// TODO: check if I need to use mutexes on getting
+
+	result := make([]*domain.UserModel, len(r.users))
+
+	for _, value := range r.users {
+		result = append(result, value)
+	}
+	return result, nil
+}
