@@ -42,22 +42,22 @@ k8s_resource('api-gateway', port_forwards=8004,
 ### End of API Gateway ###
 ### Trip Service ###
 
-trip_compile_cmd = 'CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o build/trip-service ./services/trip-service/cmd/main.go'
+trip_compile_cmd = 'CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o build/user-service ./services/user-service/cmd/main.go'
 if os.name == 'nt':
  trip_compile_cmd = './infra/development/docker/trip-build.bat'
 
 local_resource(
-  'trip-service-compile',
+  'user-service-compile',
   trip_compile_cmd,
-  deps=['./services/trip-service', './shared'], labels="compiles")
+  deps=['./services/user-service', './shared'], labels="compiles")
 
 docker_build_with_restart(
-  'ride-sharing/trip-service',
+  'ride-sharing/user-service',
   '.',
-  entrypoint=['/app/build/trip-service'],
-  dockerfile='./infra/development/docker/trip-service.Dockerfile',
+  entrypoint=['/app/build/user-service'],
+  dockerfile='./infra/development/docker/user-service.Dockerfile',
   only=[
-    './build/trip-service',
+    './build/user-service',
     './shared',
   ],
   live_update=[
@@ -66,8 +66,8 @@ docker_build_with_restart(
   ],
 )
 
-k8s_yaml('./infra/development/k8s/trip-service-deployment.yaml')
-k8s_resource('trip-service', resource_deps=['trip-service-compile', 'rabbitmq'], labels="services")
+k8s_yaml('./infra/development/k8s/user-service-deployment.yaml')
+k8s_resource('user-service', resource_deps=['user-service-compile', 'rabbitmq'], labels="services")
 
 ### End of Trip Service ###
 ### Web Frontend ###

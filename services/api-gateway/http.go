@@ -2,7 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"go-clinet-locations/services/api-gateway/grpc_clients"
+	"go-clinet-locations/shared/contracts"
 	"log"
 	"net/http"
 )
@@ -24,13 +25,28 @@ func HandleUpdateUserLocation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if reqBody.Location.Longitude == 0 || reqBody.Location.Latitude == 0 {
+	if reqBody.Coordinate.Longitude == 0 || reqBody.Coordinate.Latitude == 0 {
 		http.Error(w, "invalid location data", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Printf("User location handler")
-	res := map[string]string{"Kinda": "success"}
+	userService, err := grpc_clients.NewUserServiceClient()
 
-	writeJSON(w, http.StatusOK, res)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer userService.Close()
+
+	newUser, err := userService.Client.CreateUser(r.Context(), reqBody.toProto())
+	if err != nil {
+		log.Printf("Failed to preveiw a trip: %v", err)
+		http.Error(w, "Failed to Preview trip", http.StatusInternalServerError)
+		return
+
+	}
+
+	response := contracts.APIResponse{Data: newUser}
+
+	writeJSON(w, http.StatusOK, response)
 }

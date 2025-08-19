@@ -124,7 +124,7 @@ docker build -t {REGION}-docker.pkg.dev/{PROJECT_ID}/ride-sharing/api-gateway:la
 docker build -t {REGION}-docker.pkg.dev/{PROJECT_ID}/ride-sharing/driver-service:latest --platform linux/amd64 -f infra/production/docker/driver-service.Dockerfile .
 
 # Build the Trip service 
-docker build -t {REGION}-docker.pkg.dev/{PROJECT_ID}/ride-sharing/trip-service:latest --platform linux/amd64 -f infra/production/docker/trip-service.Dockerfile .
+docker build -t {REGION}-docker.pkg.dev/{PROJECT_ID}/ride-sharing/user-service:latest --platform linux/amd64 -f infra/production/docker/user-service.Dockerfile .
 
 # Build the Payment service 
 docker build -t {REGION}-docker.pkg.dev/{PROJECT_ID}/ride-sharing/payment-service:latest --platform linux/amd64 -f infra/production/docker/payment-service.Dockerfile .
@@ -172,7 +172,7 @@ kubectl apply -f infra/production/k8s/rabbitmq-deployment.yaml
 kubectl apply -f infra/production/k8s/api-gateway-deployment.yaml
 # Wait until the API is up and then do the next and so on...
 kubectl apply -f infra/production/k8s/driver-service-deployment.yaml
-kubectl apply -f infra/production/k8s/trip-service-deployment.yaml
+kubectl apply -f infra/production/k8s/user-service-deployment.yaml
 kubectl apply -f infra/production/k8s/payment-service-deployment.yaml
 ```
 

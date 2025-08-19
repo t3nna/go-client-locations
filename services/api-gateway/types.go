@@ -1,8 +1,22 @@
 package main
 
-import "go-clinet-locations/shared/types"
+import (
+	pb "go-clinet-locations/shared/proto/user"
+	"go-clinet-locations/shared/types"
+)
 
 type userLocationRequest struct {
-	UserName string           `json:"userName"`
-	Location types.Coordinate `json:"location"`
+	UserName   string           `json:"userName"`
+	Coordinate types.Coordinate `json:"coordinate"`
+}
+
+func (userLocation *userLocationRequest) toProto() *pb.CreateUserRequest {
+	return &pb.CreateUserRequest{
+		UserName: userLocation.UserName,
+		Coordinate: &pb.Coordinate{
+			Latitude:  userLocation.Coordinate.Latitude,
+			Longitude: userLocation.Coordinate.Longitude,
+		},
+	}
+
 }
