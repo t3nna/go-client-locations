@@ -44,11 +44,13 @@ func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.UpdateUserRequest)
 	}
 	log.Printf("user created with id: %v", user.UserId)
 	return &pb.CreateUserResponse{
-		UserId:   user.UserId,
-		UserName: user.UserName,
-		Coordinate: &pb.Coordinate{
-			Latitude:  user.Coordinates.Latitude,
-			Longitude: user.Coordinates.Longitude,
+		User: &pb.User{
+			UserId:   user.UserId,
+			UserName: user.UserName,
+			Coordinate: &pb.Coordinate{
+				Latitude:  user.Coordinates.Latitude,
+				Longitude: user.Coordinates.Longitude,
+			},
 		},
 	}, nil
 
@@ -68,11 +70,30 @@ func (h *grpcHandler) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 	}
 
 	return &pb.UpdateUserResponse{
-		UserId:   user.UserId,
-		UserName: user.UserName,
-		Coordinate: &pb.Coordinate{
-			Latitude:  user.Coordinates.Latitude,
-			Longitude: user.Coordinates.Longitude,
+		User: &pb.User{
+			UserId:   user.UserId,
+			UserName: user.UserName,
+			Coordinate: &pb.Coordinate{
+				Latitude:  user.Coordinates.Latitude,
+				Longitude: user.Coordinates.Longitude,
+			},
 		},
 	}, nil
+}
+
+func (h *grpcHandler) SearchUsers(ctx context.Context, req *pb.SearchUsersRequest) (*pb.SearchUsersResponse, error) {
+	reqCoordinate := req.GetCoordinate()
+
+	coordinate := &types.Coordinate{
+		Longitude: reqCoordinate.Longitude,
+		Latitude:  reqCoordinate.Latitude,
+	}
+	users, err := h.service.SearchUsers(ctx, coordinate, float64(req.GetRadius()))
+
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to search users %v", err)
+	}
+
+	return &pb.SearchUsersResponse{Users: domain.ToUsersProto(users)}, nil
+
 }

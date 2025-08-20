@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type CreateUserResponse struct {
+type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
 	UserName      string                 `protobuf:"bytes,2,opt,name=userName,proto3" json:"userName,omitempty"`
@@ -30,9 +30,119 @@ type CreateUserResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *User) Reset() {
+	*x = User{}
+	mi := &file_user_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *User) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *User) GetUserName() string {
+	if x != nil {
+		return x.UserName
+	}
+	return ""
+}
+
+func (x *User) GetCoordinate() *Coordinate {
+	if x != nil {
+		return x.Coordinate
+	}
+	return nil
+}
+
+type Coordinate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Latitude      float64                `protobuf:"fixed64,1,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	Longitude     float64                `protobuf:"fixed64,2,opt,name=longitude,proto3" json:"longitude,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Coordinate) Reset() {
+	*x = Coordinate{}
+	mi := &file_user_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Coordinate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Coordinate) ProtoMessage() {}
+
+func (x *Coordinate) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Coordinate.ProtoReflect.Descriptor instead.
+func (*Coordinate) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Coordinate) GetLatitude() float64 {
+	if x != nil {
+		return x.Latitude
+	}
+	return 0
+}
+
+func (x *Coordinate) GetLongitude() float64 {
+	if x != nil {
+		return x.Longitude
+	}
+	return 0
+}
+
+type CreateUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
 func (x *CreateUserResponse) Reset() {
 	*x = CreateUserResponse{}
-	mi := &file_user_proto_msgTypes[0]
+	mi := &file_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +154,7 @@ func (x *CreateUserResponse) String() string {
 func (*CreateUserResponse) ProtoMessage() {}
 
 func (x *CreateUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[0]
+	mi := &file_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,31 +167,16 @@ func (x *CreateUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateUserResponse.ProtoReflect.Descriptor instead.
 func (*CreateUserResponse) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{0}
+	return file_user_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateUserResponse) GetUserId() string {
+func (x *CreateUserResponse) GetUser() *User {
 	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *CreateUserResponse) GetUserName() string {
-	if x != nil {
-		return x.UserName
-	}
-	return ""
-}
-
-func (x *CreateUserResponse) GetCoordinate() *Coordinate {
-	if x != nil {
-		return x.Coordinate
+		return x.User
 	}
 	return nil
 }
 
-// TODO: generate go code + add rpc for search
 type UpdateUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserName      string                 `protobuf:"bytes,1,opt,name=userName,proto3" json:"userName,omitempty"`
@@ -92,7 +187,7 @@ type UpdateUserRequest struct {
 
 func (x *UpdateUserRequest) Reset() {
 	*x = UpdateUserRequest{}
-	mi := &file_user_proto_msgTypes[1]
+	mi := &file_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -104,7 +199,7 @@ func (x *UpdateUserRequest) String() string {
 func (*UpdateUserRequest) ProtoMessage() {}
 
 func (x *UpdateUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[1]
+	mi := &file_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,7 +212,7 @@ func (x *UpdateUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateUserRequest.ProtoReflect.Descriptor instead.
 func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{1}
+	return file_user_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpdateUserRequest) GetUserName() string {
@@ -136,16 +231,14 @@ func (x *UpdateUserRequest) GetCoordinate() *Coordinate {
 
 type UpdateUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	UserName      string                 `protobuf:"bytes,2,opt,name=userName,proto3" json:"userName,omitempty"`
-	Coordinate    *Coordinate            `protobuf:"bytes,3,opt,name=coordinate,proto3" json:"coordinate,omitempty"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateUserResponse) Reset() {
 	*x = UpdateUserResponse{}
-	mi := &file_user_proto_msgTypes[2]
+	mi := &file_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -157,7 +250,7 @@ func (x *UpdateUserResponse) String() string {
 func (*UpdateUserResponse) ProtoMessage() {}
 
 func (x *UpdateUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[2]
+	mi := &file_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,53 +263,39 @@ func (x *UpdateUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateUserResponse.ProtoReflect.Descriptor instead.
 func (*UpdateUserResponse) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{2}
+	return file_user_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UpdateUserResponse) GetUserId() string {
+func (x *UpdateUserResponse) GetUser() *User {
 	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *UpdateUserResponse) GetUserName() string {
-	if x != nil {
-		return x.UserName
-	}
-	return ""
-}
-
-func (x *UpdateUserResponse) GetCoordinate() *Coordinate {
-	if x != nil {
-		return x.Coordinate
+		return x.User
 	}
 	return nil
 }
 
-type Coordinate struct {
+type SearchUsersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Latitude      float64                `protobuf:"fixed64,1,opt,name=latitude,proto3" json:"latitude,omitempty"`
-	Longitude     float64                `protobuf:"fixed64,2,opt,name=longitude,proto3" json:"longitude,omitempty"`
+	Coordinate    *Coordinate            `protobuf:"bytes,1,opt,name=coordinate,proto3" json:"coordinate,omitempty"`
+	Radius        float32                `protobuf:"fixed32,2,opt,name=radius,proto3" json:"radius,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Coordinate) Reset() {
-	*x = Coordinate{}
-	mi := &file_user_proto_msgTypes[3]
+func (x *SearchUsersRequest) Reset() {
+	*x = SearchUsersRequest{}
+	mi := &file_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Coordinate) String() string {
+func (x *SearchUsersRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Coordinate) ProtoMessage() {}
+func (*SearchUsersRequest) ProtoMessage() {}
 
-func (x *Coordinate) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[3]
+func (x *SearchUsersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -227,23 +306,67 @@ func (x *Coordinate) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Coordinate.ProtoReflect.Descriptor instead.
-func (*Coordinate) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{3}
+// Deprecated: Use SearchUsersRequest.ProtoReflect.Descriptor instead.
+func (*SearchUsersRequest) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *Coordinate) GetLatitude() float64 {
+func (x *SearchUsersRequest) GetCoordinate() *Coordinate {
 	if x != nil {
-		return x.Latitude
+		return x.Coordinate
+	}
+	return nil
+}
+
+func (x *SearchUsersRequest) GetRadius() float32 {
+	if x != nil {
+		return x.Radius
 	}
 	return 0
 }
 
-func (x *Coordinate) GetLongitude() float64 {
+type SearchUsersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*User                `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchUsersResponse) Reset() {
+	*x = SearchUsersResponse{}
+	mi := &file_user_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchUsersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchUsersResponse) ProtoMessage() {}
+
+func (x *SearchUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[6]
 	if x != nil {
-		return x.Longitude
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
 	}
-	return 0
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchUsersResponse.ProtoReflect.Descriptor instead.
+func (*SearchUsersResponse) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SearchUsersResponse) GetUsers() []*User {
+	if x != nil {
+		return x.Users
+	}
+	return nil
 }
 
 var File_user_proto protoreflect.FileDescriptor
@@ -251,19 +374,8 @@ var File_user_proto protoreflect.FileDescriptor
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\x04user\"z\n" +
-	"\x12CreateUserResponse\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
-	"\buserName\x18\x02 \x01(\tR\buserName\x120\n" +
-	"\n" +
-	"coordinate\x18\x03 \x01(\v2\x10.user.CoordinateR\n" +
-	"coordinate\"a\n" +
-	"\x11UpdateUserRequest\x12\x1a\n" +
-	"\buserName\x18\x01 \x01(\tR\buserName\x120\n" +
-	"\n" +
-	"coordinate\x18\x02 \x01(\v2\x10.user.CoordinateR\n" +
-	"coordinate\"z\n" +
-	"\x12UpdateUserResponse\x12\x16\n" +
+	"user.proto\x12\x04user\"l\n" +
+	"\x04User\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
 	"\buserName\x18\x02 \x01(\tR\buserName\x120\n" +
 	"\n" +
@@ -272,12 +384,32 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"Coordinate\x12\x1a\n" +
 	"\blatitude\x18\x01 \x01(\x01R\blatitude\x12\x1c\n" +
-	"\tlongitude\x18\x02 \x01(\x01R\tlongitude2\x8f\x01\n" +
+	"\tlongitude\x18\x02 \x01(\x01R\tlongitude\"4\n" +
+	"\x12CreateUserResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".user.UserR\x04user\"a\n" +
+	"\x11UpdateUserRequest\x12\x1a\n" +
+	"\buserName\x18\x01 \x01(\tR\buserName\x120\n" +
+	"\n" +
+	"coordinate\x18\x02 \x01(\v2\x10.user.CoordinateR\n" +
+	"coordinate\"4\n" +
+	"\x12UpdateUserResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".user.UserR\x04user\"^\n" +
+	"\x12SearchUsersRequest\x120\n" +
+	"\n" +
+	"coordinate\x18\x01 \x01(\v2\x10.user.CoordinateR\n" +
+	"coordinate\x12\x16\n" +
+	"\x06radius\x18\x02 \x01(\x02R\x06radius\"7\n" +
+	"\x13SearchUsersResponse\x12 \n" +
+	"\x05users\x18\x01 \x03(\v2\n" +
+	".user.UserR\x05users2\xd3\x01\n" +
 	"\vUserService\x12?\n" +
 	"\n" +
 	"CreateUser\x12\x17.user.UpdateUserRequest\x1a\x18.user.CreateUserResponse\x12?\n" +
 	"\n" +
-	"UpdateUser\x12\x17.user.UpdateUserRequest\x1a\x18.user.UpdateUserResponseB\x18Z\x16shared/proto/user;userb\x06proto3"
+	"UpdateUser\x12\x17.user.UpdateUserRequest\x1a\x18.user.UpdateUserResponse\x12B\n" +
+	"\vSearchUsers\x12\x18.user.SearchUsersRequest\x1a\x19.user.SearchUsersResponseB\x18Z\x16shared/proto/user;userb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -291,26 +423,34 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_user_proto_goTypes = []any{
-	(*CreateUserResponse)(nil), // 0: user.CreateUserResponse
-	(*UpdateUserRequest)(nil),  // 1: user.UpdateUserRequest
-	(*UpdateUserResponse)(nil), // 2: user.UpdateUserResponse
-	(*Coordinate)(nil),         // 3: user.Coordinate
+	(*User)(nil),                // 0: user.User
+	(*Coordinate)(nil),          // 1: user.Coordinate
+	(*CreateUserResponse)(nil),  // 2: user.CreateUserResponse
+	(*UpdateUserRequest)(nil),   // 3: user.UpdateUserRequest
+	(*UpdateUserResponse)(nil),  // 4: user.UpdateUserResponse
+	(*SearchUsersRequest)(nil),  // 5: user.SearchUsersRequest
+	(*SearchUsersResponse)(nil), // 6: user.SearchUsersResponse
 }
 var file_user_proto_depIdxs = []int32{
-	3, // 0: user.CreateUserResponse.coordinate:type_name -> user.Coordinate
-	3, // 1: user.UpdateUserRequest.coordinate:type_name -> user.Coordinate
-	3, // 2: user.UpdateUserResponse.coordinate:type_name -> user.Coordinate
-	1, // 3: user.UserService.CreateUser:input_type -> user.UpdateUserRequest
-	1, // 4: user.UserService.UpdateUser:input_type -> user.UpdateUserRequest
-	0, // 5: user.UserService.CreateUser:output_type -> user.CreateUserResponse
-	2, // 6: user.UserService.UpdateUser:output_type -> user.UpdateUserResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1, // 0: user.User.coordinate:type_name -> user.Coordinate
+	0, // 1: user.CreateUserResponse.user:type_name -> user.User
+	1, // 2: user.UpdateUserRequest.coordinate:type_name -> user.Coordinate
+	0, // 3: user.UpdateUserResponse.user:type_name -> user.User
+	1, // 4: user.SearchUsersRequest.coordinate:type_name -> user.Coordinate
+	0, // 5: user.SearchUsersResponse.users:type_name -> user.User
+	3, // 6: user.UserService.CreateUser:input_type -> user.UpdateUserRequest
+	3, // 7: user.UserService.UpdateUser:input_type -> user.UpdateUserRequest
+	5, // 8: user.UserService.SearchUsers:input_type -> user.SearchUsersRequest
+	2, // 9: user.UserService.CreateUser:output_type -> user.CreateUserResponse
+	4, // 10: user.UserService.UpdateUser:output_type -> user.UpdateUserResponse
+	6, // 11: user.UserService.SearchUsers:output_type -> user.SearchUsersResponse
+	9, // [9:12] is the sub-list for method output_type
+	6, // [6:9] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -324,7 +464,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

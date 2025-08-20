@@ -98,7 +98,7 @@ func (r *inmemRepository) UpdateUser(ctx context.Context, userName string, coord
 func (r *inmemRepository) GetUsers(ctx context.Context) ([]*domain.UserModel, error) {
 	// TODO: check if I need to use mutexes on getting
 
-	result := make([]*domain.UserModel, len(r.users))
+	result := make([]*domain.UserModel, 0, 10)
 
 	for _, value := range r.users {
 		result = append(result, value)
