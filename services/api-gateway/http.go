@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"go-clinet-locations/services/api-gateway/grpc_clients"
 	"go-clinet-locations/shared/contracts"
+	"go-clinet-locations/shared/util"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
@@ -92,4 +94,41 @@ func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	writeJSON(w, http.StatusOK, response)
 
+}
+
+func HandleSearchUser(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+	if len(q["lat"]) != 1 {
+		http.Error(w, "failed to retrieve coordinates", http.StatusBadRequest)
+		return
+	}
+	if len(q["lon"]) != 1 {
+		http.Error(w, "failed to retrieve coordinates", http.StatusBadRequest)
+		return
+	}
+	lat := q["lat"][0]
+	lon := q["lon"][0]
+
+	latitude, err := strconv.ParseFloat(lat, 64)
+	if err != nil {
+		http.Error(w, "failed to parse latitude", http.StatusBadRequest)
+		return
+	}
+
+	longitude, err := strconv.ParseFloat(lon, 64)
+
+	if err != nil {
+		http.Error(w, "failed to parse longitude", http.StatusBadRequest)
+		return
+	}
+
+	err = util.ValidateCords(latitude, longitude)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	res := contracts.APIResponse{Data: "success"}
+
+	writeJSON(w, http.StatusOK, res)
 }

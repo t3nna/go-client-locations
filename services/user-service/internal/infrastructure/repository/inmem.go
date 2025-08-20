@@ -16,36 +16,50 @@ type inmemRepository struct {
 func NewInmemRepository() *inmemRepository {
 	return &inmemRepository{
 		users: map[string]*domain.UserModel{
+			// Magnolia
 			"user1": {
 				UserName: "Ivan",
 				UserId:   "user1",
 				Coordinates: &types.Coordinate{
-					Latitude:  51.10861618949566,
-					Longitude: 17.03187985482019,
+					Latitude:  51.11822470712269,
+					Longitude: 16.990711729269563,
 				},
 			},
+			// Warsaw
 			"user2": {
-				UserName: "Ivan",
+				UserName: "Igor",
 				UserId:   "user2",
 				Coordinates: &types.Coordinate{
-					Latitude:  51.5,
-					Longitude: 17.7,
+					Latitude:  52.23553956649786,
+					Longitude: 20.984595191389918,
 				},
 			},
+
+			// Kyiv
 			"user3": {
-				UserName: "Ivan",
+				UserName: "Den",
 				UserId:   "user3",
 				Coordinates: &types.Coordinate{
-					Latitude:  51.9,
-					Longitude: 17.0,
+					Latitude:  50.53401932980686,
+					Longitude: 31.178889172903055,
 				},
 			},
+			//Biskupin
 			"user4": {
-				UserName: "Ivan",
+				UserName: "Kate",
 				UserId:   "user4",
 				Coordinates: &types.Coordinate{
-					Latitude:  51.32,
-					Longitude: 17.88,
+					Latitude:  51.10181370006046,
+					Longitude: 17.10312341673202,
+				},
+			},
+			// T6
+			"user5": {
+				UserName: "Barbara",
+				UserId:   "user5",
+				Coordinates: &types.Coordinate{
+					Latitude:  51.11956092410769,
+					Longitude: 17.05696305051491,
 				},
 			},
 		},
