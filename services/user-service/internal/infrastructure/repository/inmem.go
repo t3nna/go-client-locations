@@ -78,7 +78,7 @@ func (r *inmemRepository) UpdateUser(ctx context.Context, userName string, coord
 		}
 	}
 
-	return nil, fmt.Errorf("failde to find user in DB")
+	return nil, fmt.Errorf("failed to find user in DB")
 }
 
 func (r *inmemRepository) GetUsers(ctx context.Context) ([]*domain.UserModel, error) {

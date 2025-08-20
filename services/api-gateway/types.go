@@ -10,8 +10,8 @@ type userLocationRequest struct {
 	Coordinate types.Coordinate `json:"coordinate"`
 }
 
-func (userLocation *userLocationRequest) toProto() *pb.CreateUserRequest {
-	return &pb.CreateUserRequest{
+func (userLocation *userLocationRequest) toProto() *pb.UpdateUserRequest {
+	return &pb.UpdateUserRequest{
 		UserName: userLocation.UserName,
 		Coordinate: &pb.Coordinate{
 			Latitude:  userLocation.Coordinate.Latitude,

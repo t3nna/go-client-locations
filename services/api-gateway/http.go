@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func HandleUpdateUserLocation(w http.ResponseWriter, r *http.Request) {
+func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 	var reqBody userLocationRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
@@ -40,8 +40,8 @@ func HandleUpdateUserLocation(w http.ResponseWriter, r *http.Request) {
 
 	newUser, err := userService.Client.CreateUser(r.Context(), reqBody.toProto())
 	if err != nil {
-		log.Printf("Failed to preveiw a trip: %v", err)
-		http.Error(w, "Failed to Preview trip", http.StatusInternalServerError)
+		log.Printf("Failed to create a user: %v", err)
+		http.Error(w, "Failed to create a user", http.StatusInternalServerError)
 		return
 
 	}
@@ -49,4 +49,47 @@ func HandleUpdateUserLocation(w http.ResponseWriter, r *http.Request) {
 	response := contracts.APIResponse{Data: newUser}
 
 	writeJSON(w, http.StatusOK, response)
+}
+func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
+	var reqBody userLocationRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
+		log.Println(err)
+		http.Error(w, "failed to parse JSON data", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+
+	// validation
+
+	if reqBody.UserName == "" {
+		http.Error(w, "failed to parse JSON data", http.StatusBadRequest)
+		return
+	}
+
+	if reqBody.Coordinate.Longitude == 0 || reqBody.Coordinate.Latitude == 0 {
+		http.Error(w, "invalid location data", http.StatusBadRequest)
+		return
+	}
+	userService, err := grpc_clients.NewUserServiceClient()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer userService.Close()
+
+	newUser, err := userService.Client.UpdateUser(r.Context(), reqBody.toProto())
+
+	if err != nil {
+		log.Printf("Failed to update a user: %v", err)
+		http.Error(w, "Failed to update a user", http.StatusInternalServerError)
+		return
+
+	}
+
+	response := contracts.APIResponse{Data: newUser}
+
+	writeJSON(w, http.StatusOK, response)
+
 }

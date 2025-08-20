@@ -5,14 +5,8 @@ package user;
 option go_package = "shared/proto/user;user";
 
 service UserService {
-  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  rpc CreateUser (UpdateUserRequest) returns (CreateUserResponse);
   rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
-}
-
-message CreateUserRequest{
-  string userId = 1;
-  string userName = 2;
-  Coordinate coordinate = 3;
 }
 
 message CreateUserResponse{

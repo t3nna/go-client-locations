@@ -25,7 +25,7 @@ func NewGRPCHandler(server *grpc.Server, service domain.UserService) *grpcHandle
 
 	return handler
 }
-func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.CreateUserResponse, error) {
 	reqCoordinate := req.Coordinate
 
 	userCords := &types.Coordinate{
@@ -52,4 +52,27 @@ func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 		},
 	}, nil
 
+}
+
+func (h *grpcHandler) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+	reqCoordinate := req.GetCoordinate()
+
+	userCords := &types.Coordinate{
+		Longitude: reqCoordinate.Longitude,
+		Latitude:  reqCoordinate.Latitude,
+	}
+
+	user, err := h.service.UpdateUser(ctx, req.GetUserName(), userCords)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update user %v", err)
+	}
+
+	return &pb.UpdateUserResponse{
+		UserId:   user.UserId,
+		UserName: user.UserName,
+		Coordinate: &pb.Coordinate{
+			Latitude:  user.Coordinates.Latitude,
+			Longitude: user.Coordinates.Longitude,
+		},
+	}, nil
 }
