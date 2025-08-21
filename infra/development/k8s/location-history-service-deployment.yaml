@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: location-history-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: location-history-service
   template:
     metadata:
       labels:
-        app: user-service
+        app: location-history-service
     spec:
       containers:
-        - name: user-service
-          image: ride-sharing/user-service
+        - name: location-history-service
+          image: ride-sharing/location-history-service
           ports:
-            - containerPort: 9093
+            - containerPort: 9092
           resources:
             requests:
               memory: "64Mi"
@@ -28,12 +28,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: location-history-service
 spec:
   selector:
-    app: user-service
+    app: location-history-service
   ports:
-    - port: 9093
+    - port: 9092
       name: grpc
-      targetPort: 9093
+      targetPort: 9092
   type: ClusterIP

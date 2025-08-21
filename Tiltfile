@@ -70,6 +70,37 @@ k8s_yaml('./infra/development/k8s/user-service-deployment.yaml')
 k8s_resource('user-service', resource_deps=['user-service-compile', 'rabbitmq'], labels="services")
 
 ### End of Trip Service ###
+### Location History Service ###
+
+driver_compile_cmd = 'CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o build/location-history-service ./services/location-history-service'
+if os.name == 'nt':
+ driver_compile_cmd = './infra/development/docker/driver-build.bat'
+
+local_resource(
+  'location-history-service-compile',
+  driver_compile_cmd,
+  deps=['./services/location-history-service', './shared'], labels="compiles")
+
+docker_build_with_restart(
+  'ride-sharing/location-history-service',
+  '.',
+  entrypoint=['/app/build/location-history-service'],
+  dockerfile='./infra/development/docker/location-history-service.Dockerfile',
+  only=[
+    './build/location-history-service',
+    './shared',
+  ],
+  live_update=[
+    sync('./build', '/app/build'),
+    sync('./shared', '/app/shared'),
+  ],
+)
+
+k8s_yaml('./infra/development/k8s/location-history-service-deployment.yaml')
+k8s_resource('location-history-service', resource_deps=['driver-service-compile'], labels="services")
+
+### End of Location History Service ###
+
 ### Web Frontend ###
 
 docker_build(
