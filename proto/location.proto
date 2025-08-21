@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package location;
+
+option go_package = "shared/proto/location;location";
+
+service LocationService{
+  rpc RegisterLocation(RegisterLocationRequest) returns (RegisterLocationResponse);
+}
+
+message RegisterLocationResponse{
+  string userId = 1;
+  repeated LocationRecord locationRecords = 2;
+}
+
+message RegisterLocationRequest{
+  string userId = 1;
+  Coordinate coordinate = 2;
+}
+
+message LocationRecord{
+  Coordinate coordinate = 1;
+  string timestamp = 2;
+}
+message Coordinate{
+  double latitude = 1;
+  double longitude = 2;
+}
