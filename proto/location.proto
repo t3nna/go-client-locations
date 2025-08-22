@@ -16,6 +16,7 @@ message RegisterLocationResponse{
 message RegisterLocationRequest{
   string userId = 1;
   Coordinate coordinate = 2;
+  string timestamp = 3;
 }
 
 message LocationRecord{

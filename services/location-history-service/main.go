@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	grpcserver "google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
@@ -29,24 +30,23 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	//svc := NewService()
+	svc := NewService()
 	//// starting the grpcServer
-	//grpcServer := grpcserver.NewServer()
-	//NewGrpcHandler(grpcServer, svc)
+	grpcServer := grpcserver.NewServer()
+	NewGrpcHandler(grpcServer, svc)
 
-	log.Println("Starting gRPC server Driver service on port ", lis.Addr().String())
+	log.Println("Starting gRPC server Location service on port ", lis.Addr().String())
 
 	go func() {
-		//if err := grpcServer.Serve(lis); err != nil {
-		//	log.Printf("failed to serve: %v", err)
-		//	cancel()
-		//}
+		if err := grpcServer.Serve(lis); err != nil {
+			log.Printf("failed to serve: %v", err)
+			cancel()
+		}
 	}()
 
 	// wait for the shutdown signal
 	<-ctx.Done()
 
 	log.Println("Shutting down the server...")
-	//grpcServer.GracefulStop()
-
+	grpcServer.GracefulStop()
 }

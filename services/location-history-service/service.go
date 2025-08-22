@@ -10,14 +10,14 @@ type LocationRecord struct {
 	Coordinate *types.Coordinate
 	Timestamp  time.Time
 }
-type UserLocationHistoryService struct {
+type Service struct {
 	history map[string][]*LocationRecord
 	mu      sync.RWMutex
 }
 
-func NewService() *UserLocationHistoryService {
+func NewService() *Service {
 	now := time.Now()
-	return &UserLocationHistoryService{
+	return &Service{
 		history: map[string][]*LocationRecord{
 			"user1": []*LocationRecord{
 				{
@@ -46,7 +46,7 @@ func NewService() *UserLocationHistoryService {
 	}
 }
 
-func (s *UserLocationHistoryService) RegisterLocation(userId string, coords types.Coordinate, timestamp time.Time) ([]*LocationRecord, error) {
+func (s *Service) RegisterLocation(userId string, coords *types.Coordinate, timestamp time.Time) ([]*LocationRecord, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -54,7 +54,7 @@ func (s *UserLocationHistoryService) RegisterLocation(userId string, coords type
 	if !ok {
 		s.history[userId] = []*LocationRecord{
 			{
-				Coordinate: &coords,
+				Coordinate: coords,
 				Timestamp:  timestamp,
 			},
 		}
@@ -62,7 +62,7 @@ func (s *UserLocationHistoryService) RegisterLocation(userId string, coords type
 	}
 
 	user = append(user, &LocationRecord{
-		Coordinate: &coords,
+		Coordinate: coords,
 		Timestamp:  timestamp,
 	},
 	)
