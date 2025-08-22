@@ -62,3 +62,7 @@ build/
 
 # Secrets
 secrets.yaml
+
+# Web
+# Is removed until implemented
+/web
