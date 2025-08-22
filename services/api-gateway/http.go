@@ -1,14 +1,17 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"go-clinet-locations/services/api-gateway/grpc_clients"
 	"go-clinet-locations/shared/contracts"
-	pb "go-clinet-locations/shared/proto/user"
+	pb_loction "go-clinet-locations/shared/proto/location"
+	pb_user "go-clinet-locations/shared/proto/user"
 	"go-clinet-locations/shared/util"
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
@@ -45,6 +48,25 @@ func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Failed to create a user: %v", err)
 		http.Error(w, "Failed to create a user", http.StatusInternalServerError)
+		return
+
+	}
+
+	now := time.Now()
+	isoNow := now.Format(time.RFC3339)
+
+	// Calling location history service
+	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
+		UserId: newUser.User.UserId,
+		Coordinate: &pb_loction.Coordinate{
+			Latitude:  newUser.User.Coordinate.Latitude,
+			Longitude: newUser.User.Coordinate.Longitude,
+		},
+		Timestamp: isoNow,
+	})
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 
 	}
@@ -153,8 +175,8 @@ func HandleSearchUser(w http.ResponseWriter, r *http.Request) {
 
 	defer userService.Close()
 
-	filteredUsers, err := userService.Client.SearchUsers(r.Context(), &pb.SearchUsersRequest{
-		Coordinate: &pb.Coordinate{
+	filteredUsers, err := userService.Client.SearchUsers(r.Context(), &pb_user.SearchUsersRequest{
+		Coordinate: &pb_user.Coordinate{
 			Latitude:  latitude,
 			Longitude: longitude,
 		},
@@ -170,4 +192,22 @@ func HandleSearchUser(w http.ResponseWriter, r *http.Request) {
 	res := contracts.APIResponse{Data: filteredUsers}
 
 	writeJSON(w, http.StatusOK, res)
+}
+
+func handleRegisterLocation(ctx context.Context, req *pb_loction.RegisterLocationRequest) error {
+	locationService, err := grpc_clients.NewLocationServiceClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer locationService.Close()
+	newLocationRecord, err := locationService.Client.RegisterLocation(ctx, req)
+
+	if err != nil {
+		log.Printf("Failed to register user location: %v", err)
+		return err
+	}
+
+	log.Println(newLocationRecord)
+
+	return nil
 }

@@ -28,9 +28,9 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 		Longitude: req.GetCoordinate().Longitude,
 	}
 	isoLayout := time.RFC3339
-	timestamp, err := time.Parse(req.GetTimestamp(), isoLayout)
+	timestamp, err := time.Parse(isoLayout, req.GetTimestamp())
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to parse timestamp")
+		return nil, status.Errorf(codes.Internal, "failed to parse timestamp: %v", err)
 	}
 
 	// TODO: return location records, map it to pb type
