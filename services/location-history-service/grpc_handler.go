@@ -34,7 +34,19 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 	}
 
 	// TODO: return location records, map it to pb type
-	_, err = h.service.RegisterLocation(req.UserId, coords, timestamp)
+	locationRecords, err := h.service.RegisterLocation(req.UserId, coords, timestamp)
+
+	locationRecordsProto := make([]*pb.LocationRecord, len(locationRecords))
+
+	for _, r := range locationRecords {
+		locationRecordsProto = append(locationRecordsProto, &pb.LocationRecord{
+			Coordinate: &pb.Coordinate{
+				Latitude:  r.Coordinate.Latitude,
+				Longitude: r.Coordinate.Longitude,
+			},
+			Timestamp: r.Timestamp.String(),
+		})
+	}
 
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to Register Location")
@@ -42,6 +54,6 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 
 	return &pb.RegisterLocationResponse{
 		UserId:          req.GetUserId(),
-		LocationRecords: nil,
+		LocationRecords: locationRecordsProto,
 	}, nil
 }

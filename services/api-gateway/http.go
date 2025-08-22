@@ -113,6 +113,26 @@ func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	}
 
+	// TODO: move timestamp to location service
+	now := time.Now()
+	isoNow := now.Format(time.RFC3339)
+
+	// Calling location history service
+	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
+		UserId: newUser.User.UserId,
+		Coordinate: &pb_loction.Coordinate{
+			Latitude:  newUser.User.Coordinate.Latitude,
+			Longitude: newUser.User.Coordinate.Longitude,
+		},
+		Timestamp: isoNow,
+	})
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+
+	}
+
 	response := contracts.APIResponse{Data: newUser}
 
 	writeJSON(w, http.StatusOK, response)
