@@ -21,58 +21,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type RegisterLocationResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	UserId          string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	LocationRecords []*LocationRecord      `protobuf:"bytes,2,rep,name=locationRecords,proto3" json:"locationRecords,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *RegisterLocationResponse) Reset() {
-	*x = RegisterLocationResponse{}
-	mi := &file_location_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RegisterLocationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RegisterLocationResponse) ProtoMessage() {}
-
-func (x *RegisterLocationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_location_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RegisterLocationResponse.ProtoReflect.Descriptor instead.
-func (*RegisterLocationResponse) Descriptor() ([]byte, []int) {
-	return file_location_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *RegisterLocationResponse) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *RegisterLocationResponse) GetLocationRecords() []*LocationRecord {
-	if x != nil {
-		return x.LocationRecords
-	}
-	return nil
-}
-
 type RegisterLocationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
@@ -84,7 +32,7 @@ type RegisterLocationRequest struct {
 
 func (x *RegisterLocationRequest) Reset() {
 	*x = RegisterLocationRequest{}
-	mi := &file_location_proto_msgTypes[1]
+	mi := &file_location_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -96,7 +44,7 @@ func (x *RegisterLocationRequest) String() string {
 func (*RegisterLocationRequest) ProtoMessage() {}
 
 func (x *RegisterLocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_location_proto_msgTypes[1]
+	mi := &file_location_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +57,7 @@ func (x *RegisterLocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterLocationRequest.ProtoReflect.Descriptor instead.
 func (*RegisterLocationRequest) Descriptor() ([]byte, []int) {
-	return file_location_proto_rawDescGZIP(), []int{1}
+	return file_location_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *RegisterLocationRequest) GetUserId() string {
@@ -133,6 +81,154 @@ func (x *RegisterLocationRequest) GetTimestamp() string {
 	return ""
 }
 
+type RegisterLocationResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	UserId          string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	LocationRecords []*LocationRecord      `protobuf:"bytes,2,rep,name=locationRecords,proto3" json:"locationRecords,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *RegisterLocationResponse) Reset() {
+	*x = RegisterLocationResponse{}
+	mi := &file_location_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterLocationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterLocationResponse) ProtoMessage() {}
+
+func (x *RegisterLocationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_location_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterLocationResponse.ProtoReflect.Descriptor instead.
+func (*RegisterLocationResponse) Descriptor() ([]byte, []int) {
+	return file_location_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *RegisterLocationResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *RegisterLocationResponse) GetLocationRecords() []*LocationRecord {
+	if x != nil {
+		return x.LocationRecords
+	}
+	return nil
+}
+
+type CalculateDistanceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	DateRange     string                 `protobuf:"bytes,2,opt,name=dateRange,proto3" json:"dateRange,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CalculateDistanceRequest) Reset() {
+	*x = CalculateDistanceRequest{}
+	mi := &file_location_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CalculateDistanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CalculateDistanceRequest) ProtoMessage() {}
+
+func (x *CalculateDistanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_location_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CalculateDistanceRequest.ProtoReflect.Descriptor instead.
+func (*CalculateDistanceRequest) Descriptor() ([]byte, []int) {
+	return file_location_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CalculateDistanceRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *CalculateDistanceRequest) GetDateRange() string {
+	if x != nil {
+		return x.DateRange
+	}
+	return ""
+}
+
+type CalculateDistanceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Distance      float64                `protobuf:"fixed64,1,opt,name=distance,proto3" json:"distance,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CalculateDistanceResponse) Reset() {
+	*x = CalculateDistanceResponse{}
+	mi := &file_location_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CalculateDistanceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CalculateDistanceResponse) ProtoMessage() {}
+
+func (x *CalculateDistanceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_location_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CalculateDistanceResponse.ProtoReflect.Descriptor instead.
+func (*CalculateDistanceResponse) Descriptor() ([]byte, []int) {
+	return file_location_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *CalculateDistanceResponse) GetDistance() float64 {
+	if x != nil {
+		return x.Distance
+	}
+	return 0
+}
+
 type LocationRecord struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Coordinate    *Coordinate            `protobuf:"bytes,1,opt,name=coordinate,proto3" json:"coordinate,omitempty"`
@@ -143,7 +239,7 @@ type LocationRecord struct {
 
 func (x *LocationRecord) Reset() {
 	*x = LocationRecord{}
-	mi := &file_location_proto_msgTypes[2]
+	mi := &file_location_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -155,7 +251,7 @@ func (x *LocationRecord) String() string {
 func (*LocationRecord) ProtoMessage() {}
 
 func (x *LocationRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_location_proto_msgTypes[2]
+	mi := &file_location_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -168,7 +264,7 @@ func (x *LocationRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocationRecord.ProtoReflect.Descriptor instead.
 func (*LocationRecord) Descriptor() ([]byte, []int) {
-	return file_location_proto_rawDescGZIP(), []int{2}
+	return file_location_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *LocationRecord) GetCoordinate() *Coordinate {
@@ -195,7 +291,7 @@ type Coordinate struct {
 
 func (x *Coordinate) Reset() {
 	*x = Coordinate{}
-	mi := &file_location_proto_msgTypes[3]
+	mi := &file_location_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -207,7 +303,7 @@ func (x *Coordinate) String() string {
 func (*Coordinate) ProtoMessage() {}
 
 func (x *Coordinate) ProtoReflect() protoreflect.Message {
-	mi := &file_location_proto_msgTypes[3]
+	mi := &file_location_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -220,7 +316,7 @@ func (x *Coordinate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Coordinate.ProtoReflect.Descriptor instead.
 func (*Coordinate) Descriptor() ([]byte, []int) {
-	return file_location_proto_rawDescGZIP(), []int{3}
+	return file_location_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Coordinate) GetLatitude() float64 {
@@ -241,16 +337,21 @@ var File_location_proto protoreflect.FileDescriptor
 
 const file_location_proto_rawDesc = "" +
 	"\n" +
-	"\x0elocation.proto\x12\blocation\"v\n" +
-	"\x18RegisterLocationResponse\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\tR\x06userId\x12B\n" +
-	"\x0flocationRecords\x18\x02 \x03(\v2\x18.location.LocationRecordR\x0flocationRecords\"\x85\x01\n" +
+	"\x0elocation.proto\x12\blocation\"\x85\x01\n" +
 	"\x17RegisterLocationRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\x124\n" +
 	"\n" +
 	"coordinate\x18\x02 \x01(\v2\x14.location.CoordinateR\n" +
 	"coordinate\x12\x1c\n" +
-	"\ttimestamp\x18\x03 \x01(\tR\ttimestamp\"d\n" +
+	"\ttimestamp\x18\x03 \x01(\tR\ttimestamp\"v\n" +
+	"\x18RegisterLocationResponse\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\tR\x06userId\x12B\n" +
+	"\x0flocationRecords\x18\x02 \x03(\v2\x18.location.LocationRecordR\x0flocationRecords\"P\n" +
+	"\x18CalculateDistanceRequest\x12\x16\n" +
+	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1c\n" +
+	"\tdateRange\x18\x02 \x01(\tR\tdateRange\"7\n" +
+	"\x19CalculateDistanceResponse\x12\x1a\n" +
+	"\bdistance\x18\x01 \x01(\x01R\bdistance\"d\n" +
 	"\x0eLocationRecord\x124\n" +
 	"\n" +
 	"coordinate\x18\x01 \x01(\v2\x14.location.CoordinateR\n" +
@@ -259,9 +360,10 @@ const file_location_proto_rawDesc = "" +
 	"\n" +
 	"Coordinate\x12\x1a\n" +
 	"\blatitude\x18\x01 \x01(\x01R\blatitude\x12\x1c\n" +
-	"\tlongitude\x18\x02 \x01(\x01R\tlongitude2l\n" +
+	"\tlongitude\x18\x02 \x01(\x01R\tlongitude2\xca\x01\n" +
 	"\x0fLocationService\x12Y\n" +
-	"\x10RegisterLocation\x12!.location.RegisterLocationRequest\x1a\".location.RegisterLocationResponseB Z\x1eshared/proto/location;locationb\x06proto3"
+	"\x10RegisterLocation\x12!.location.RegisterLocationRequest\x1a\".location.RegisterLocationResponse\x12\\\n" +
+	"\x11CalculateDistance\x12\".location.CalculateDistanceRequest\x1a#.location.CalculateDistanceResponseB Z\x1eshared/proto/location;locationb\x06proto3"
 
 var (
 	file_location_proto_rawDescOnce sync.Once
@@ -275,21 +377,25 @@ func file_location_proto_rawDescGZIP() []byte {
 	return file_location_proto_rawDescData
 }
 
-var file_location_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_location_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_location_proto_goTypes = []any{
-	(*RegisterLocationResponse)(nil), // 0: location.RegisterLocationResponse
-	(*RegisterLocationRequest)(nil),  // 1: location.RegisterLocationRequest
-	(*LocationRecord)(nil),           // 2: location.LocationRecord
-	(*Coordinate)(nil),               // 3: location.Coordinate
+	(*RegisterLocationRequest)(nil),   // 0: location.RegisterLocationRequest
+	(*RegisterLocationResponse)(nil),  // 1: location.RegisterLocationResponse
+	(*CalculateDistanceRequest)(nil),  // 2: location.CalculateDistanceRequest
+	(*CalculateDistanceResponse)(nil), // 3: location.CalculateDistanceResponse
+	(*LocationRecord)(nil),            // 4: location.LocationRecord
+	(*Coordinate)(nil),                // 5: location.Coordinate
 }
 var file_location_proto_depIdxs = []int32{
-	2, // 0: location.RegisterLocationResponse.locationRecords:type_name -> location.LocationRecord
-	3, // 1: location.RegisterLocationRequest.coordinate:type_name -> location.Coordinate
-	3, // 2: location.LocationRecord.coordinate:type_name -> location.Coordinate
-	1, // 3: location.LocationService.RegisterLocation:input_type -> location.RegisterLocationRequest
-	0, // 4: location.LocationService.RegisterLocation:output_type -> location.RegisterLocationResponse
-	4, // [4:5] is the sub-list for method output_type
-	3, // [3:4] is the sub-list for method input_type
+	5, // 0: location.RegisterLocationRequest.coordinate:type_name -> location.Coordinate
+	4, // 1: location.RegisterLocationResponse.locationRecords:type_name -> location.LocationRecord
+	5, // 2: location.LocationRecord.coordinate:type_name -> location.Coordinate
+	0, // 3: location.LocationService.RegisterLocation:input_type -> location.RegisterLocationRequest
+	2, // 4: location.LocationService.CalculateDistance:input_type -> location.CalculateDistanceRequest
+	1, // 5: location.LocationService.RegisterLocation:output_type -> location.RegisterLocationResponse
+	3, // 6: location.LocationService.CalculateDistance:output_type -> location.CalculateDistanceResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
 	3, // [3:3] is the sub-list for extension extendee
 	0, // [0:3] is the sub-list for field type_name
@@ -306,7 +412,7 @@ func file_location_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_location_proto_rawDesc), len(file_location_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

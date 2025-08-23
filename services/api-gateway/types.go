@@ -20,3 +20,8 @@ func (userLocation *userLocationRequest) toProto() *pb.UpdateUserRequest {
 	}
 
 }
+
+type calculateDistanceRequest struct {
+	UserId    string `json:"userId"`
+	DateRange string `json:"dateRange"`
+}

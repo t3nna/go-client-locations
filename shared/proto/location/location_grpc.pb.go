@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	LocationService_RegisterLocation_FullMethodName = "/location.LocationService/RegisterLocation"
+	LocationService_RegisterLocation_FullMethodName  = "/location.LocationService/RegisterLocation"
+	LocationService_CalculateDistance_FullMethodName = "/location.LocationService/CalculateDistance"
 )
 
 // LocationServiceClient is the client API for LocationService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LocationServiceClient interface {
 	RegisterLocation(ctx context.Context, in *RegisterLocationRequest, opts ...grpc.CallOption) (*RegisterLocationResponse, error)
+	CalculateDistance(ctx context.Context, in *CalculateDistanceRequest, opts ...grpc.CallOption) (*CalculateDistanceResponse, error)
 }
 
 type locationServiceClient struct {
@@ -47,11 +49,22 @@ func (c *locationServiceClient) RegisterLocation(ctx context.Context, in *Regist
 	return out, nil
 }
 
+func (c *locationServiceClient) CalculateDistance(ctx context.Context, in *CalculateDistanceRequest, opts ...grpc.CallOption) (*CalculateDistanceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CalculateDistanceResponse)
+	err := c.cc.Invoke(ctx, LocationService_CalculateDistance_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LocationServiceServer is the server API for LocationService service.
 // All implementations must embed UnimplementedLocationServiceServer
 // for forward compatibility.
 type LocationServiceServer interface {
 	RegisterLocation(context.Context, *RegisterLocationRequest) (*RegisterLocationResponse, error)
+	CalculateDistance(context.Context, *CalculateDistanceRequest) (*CalculateDistanceResponse, error)
 	mustEmbedUnimplementedLocationServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedLocationServiceServer struct{}
 
 func (UnimplementedLocationServiceServer) RegisterLocation(context.Context, *RegisterLocationRequest) (*RegisterLocationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterLocation not implemented")
+}
+func (UnimplementedLocationServiceServer) CalculateDistance(context.Context, *CalculateDistanceRequest) (*CalculateDistanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CalculateDistance not implemented")
 }
 func (UnimplementedLocationServiceServer) mustEmbedUnimplementedLocationServiceServer() {}
 func (UnimplementedLocationServiceServer) testEmbeddedByValue()                         {}
@@ -104,6 +120,24 @@ func _LocationService_RegisterLocation_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LocationService_CalculateDistance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CalculateDistanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LocationServiceServer).CalculateDistance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LocationService_CalculateDistance_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LocationServiceServer).CalculateDistance(ctx, req.(*CalculateDistanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LocationService_ServiceDesc is the grpc.ServiceDesc for LocationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var LocationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RegisterLocation",
 			Handler:    _LocationService_RegisterLocation_Handler,
+		},
+		{
+			MethodName: "CalculateDistance",
+			Handler:    _LocationService_CalculateDistance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

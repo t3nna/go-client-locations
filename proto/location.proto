@@ -6,6 +6,13 @@ option go_package = "shared/proto/location;location";
 
 service LocationService{
   rpc RegisterLocation(RegisterLocationRequest) returns (RegisterLocationResponse);
+  rpc CalculateDistance(CalculateDistanceRequest) returns (CalculateDistanceResponse);
+}
+
+message RegisterLocationRequest{
+  string userId = 1;
+  Coordinate coordinate = 2;
+  string timestamp = 3;
 }
 
 message RegisterLocationResponse{
@@ -13,10 +20,13 @@ message RegisterLocationResponse{
   repeated LocationRecord locationRecords = 2;
 }
 
-message RegisterLocationRequest{
-  string userId = 1;
-  Coordinate coordinate = 2;
-  string timestamp = 3;
+message CalculateDistanceRequest{
+  string userId =1;
+  string dateRange = 2;
+}
+
+message CalculateDistanceResponse{
+  double distance = 1;
 }
 
 message LocationRecord{

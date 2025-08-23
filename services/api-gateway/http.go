@@ -214,6 +214,40 @@ func HandleSearchUser(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, res)
 }
 
+func HandleCalculateDistance(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+	userId := q["userId"]
+	dateRange := q["dateRange"]
+
+	// validation
+
+	if len(userId) != 1 {
+		http.Error(w, "something wrong with userId param", http.StatusBadRequest)
+		return
+	}
+
+	if userId[0] == "" {
+		http.Error(w, "userId is missing", http.StatusBadRequest)
+	}
+
+	if len(dateRange) != 1 {
+		http.Error(w, "something wrong with dateRange param", http.StatusBadRequest)
+		return
+	}
+
+	if dateRange[0] == "" {
+		http.Error(w, "date range is missing", http.StatusBadRequest)
+		return
+	}
+
+	// TODO: Call grpc
+
+	res := contracts.APIResponse{Data: "still in development"}
+
+	writeJSON(w, http.StatusOK, res)
+
+}
+
 func handleRegisterLocation(ctx context.Context, req *pb_loction.RegisterLocationRequest) error {
 	locationService, err := grpc_clients.NewLocationServiceClient()
 	if err != nil {

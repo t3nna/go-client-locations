@@ -24,6 +24,7 @@ func main() {
 	mux.HandleFunc("POST /user/create", enableCORS(HandleCreateUser))
 	mux.HandleFunc("PATCH /user/update", enableCORS(HandleUpdateUser))
 	mux.HandleFunc("GET /user/search", enableCORS(HandleSearchUser))
+	mux.HandleFunc("GET /user/distance", enableCORS(HandleCalculateDistance))
 
 	server := &http.Server{
 		Addr:    httpAddr,
