@@ -136,7 +136,8 @@ func (x *RegisterLocationResponse) GetLocationRecords() []*LocationRecord {
 type CalculateDistanceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
-	DateRange     string                 `protobuf:"bytes,2,opt,name=dateRange,proto3" json:"dateRange,omitempty"`
+	StartDate     string                 `protobuf:"bytes,2,opt,name=startDate,proto3" json:"startDate,omitempty"`
+	EndDate       string                 `protobuf:"bytes,3,opt,name=endDate,proto3" json:"endDate,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -178,9 +179,16 @@ func (x *CalculateDistanceRequest) GetUserId() string {
 	return ""
 }
 
-func (x *CalculateDistanceRequest) GetDateRange() string {
+func (x *CalculateDistanceRequest) GetStartDate() string {
 	if x != nil {
-		return x.DateRange
+		return x.StartDate
+	}
+	return ""
+}
+
+func (x *CalculateDistanceRequest) GetEndDate() string {
+	if x != nil {
+		return x.EndDate
 	}
 	return ""
 }
@@ -346,10 +354,11 @@ const file_location_proto_rawDesc = "" +
 	"\ttimestamp\x18\x03 \x01(\tR\ttimestamp\"v\n" +
 	"\x18RegisterLocationResponse\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\x12B\n" +
-	"\x0flocationRecords\x18\x02 \x03(\v2\x18.location.LocationRecordR\x0flocationRecords\"P\n" +
+	"\x0flocationRecords\x18\x02 \x03(\v2\x18.location.LocationRecordR\x0flocationRecords\"j\n" +
 	"\x18CalculateDistanceRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1c\n" +
-	"\tdateRange\x18\x02 \x01(\tR\tdateRange\"7\n" +
+	"\tstartDate\x18\x02 \x01(\tR\tstartDate\x12\x18\n" +
+	"\aendDate\x18\x03 \x01(\tR\aendDate\"7\n" +
 	"\x19CalculateDistanceResponse\x12\x1a\n" +
 	"\bdistance\x18\x01 \x01(\x01R\bdistance\"d\n" +
 	"\x0eLocationRecord\x124\n" +

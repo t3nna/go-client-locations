@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"log"
 	"time"
 )
 
@@ -33,7 +34,6 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 		return nil, status.Errorf(codes.Internal, "failed to parse timestamp: %v", err)
 	}
 
-	// TODO: return location records, map it to pb type
 	locationRecords, err := h.service.RegisterLocation(req.UserId, coords, timestamp)
 
 	locationRecordsProto := make([]*pb.LocationRecord, len(locationRecords))
@@ -55,5 +55,29 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 	return &pb.RegisterLocationResponse{
 		UserId:          req.GetUserId(),
 		LocationRecords: locationRecordsProto,
+	}, nil
+}
+
+func (h *grpcHandler) CalculateDistance(ctx context.Context, req *pb.CalculateDistanceRequest) (*pb.CalculateDistanceResponse, error) {
+
+	isoLayout := time.RFC3339
+	startDate, err := time.Parse(isoLayout, req.GetStartDate())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to parse startDate: %v", err)
+	}
+	endDate, err := time.Parse(isoLayout, req.GetEndDate())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to parse endDate: %v", err)
+	}
+	log.Println(startDate, endDate)
+
+	distance, err := h.service.CalculateDistance(req.GetUserId(), startDate, endDate)
+	if err != nil {
+
+		return nil, status.Errorf(codes.Internal, "faild to calculate Distance: %v", err)
+	}
+
+	return &pb.CalculateDistanceResponse{
+		Distance: distance,
 	}, nil
 }

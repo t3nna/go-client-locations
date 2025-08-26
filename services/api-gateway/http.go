@@ -217,7 +217,8 @@ func HandleSearchUser(w http.ResponseWriter, r *http.Request) {
 func HandleCalculateDistance(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 	userId := q["userId"]
-	dateRange := q["dateRange"]
+	startTime := q["startTime"]
+	endTime := q["endTime"]
 
 	// validation
 
@@ -230,19 +231,49 @@ func HandleCalculateDistance(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "userId is missing", http.StatusBadRequest)
 	}
 
-	if len(dateRange) != 1 {
-		http.Error(w, "something wrong with dateRange param", http.StatusBadRequest)
+	if len(startTime) != 1 {
+		http.Error(w, "something wrong with startTime param", http.StatusBadRequest)
 		return
 	}
 
-	if dateRange[0] == "" {
-		http.Error(w, "date range is missing", http.StatusBadRequest)
+	if startTime[0] == "" {
+		http.Error(w, "startTime is missing", http.StatusBadRequest)
 		return
 	}
 
-	// TODO: Call grpc
+	if len(endTime) != 1 {
+		http.Error(w, "something wrong with endTime param", http.StatusBadRequest)
+		return
+	}
 
-	res := contracts.APIResponse{Data: "still in development"}
+	if endTime[0] == "" {
+		http.Error(w, "endTime is missing", http.StatusBadRequest)
+		return
+	}
+
+	// TODO make start and end time optional
+
+	userService, err := grpc_clients.NewLocationServiceClient()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer userService.Close()
+
+	distance, err := userService.Client.CalculateDistance(r.Context(), &pb_loction.CalculateDistanceRequest{
+		UserId:    userId[0],
+		StartDate: startTime[0],
+		EndDate:   endTime[0],
+	})
+	if err != nil {
+		log.Printf("Failed to calculate distance: %v", err)
+		http.Error(w, "Failed to calculate distance", http.StatusInternalServerError)
+		return
+
+	}
+
+	res := contracts.APIResponse{Data: distance}
 
 	writeJSON(w, http.StatusOK, res)
 

@@ -22,7 +22,8 @@ message RegisterLocationResponse{
 
 message CalculateDistanceRequest{
   string userId =1;
-  string dateRange = 2;
+  string startDate = 2;
+  string endDate =3;
 }
 
 message CalculateDistanceResponse{

@@ -5,8 +5,8 @@ import (
 	"github.com/google/uuid"
 	"go-clinet-locations/services/user-service/internal/domain"
 	"go-clinet-locations/shared/types"
+	"go-clinet-locations/shared/util"
 	"log"
-	"math"
 )
 
 type service struct {
@@ -46,7 +46,7 @@ func (s *service) SearchUsers(ctx context.Context, location *types.Coordinate, r
 
 	var filteredUsers []*domain.UserModel
 	for _, user := range users {
-		distance := calculateDistance(location, user.Coordinates)
+		distance := util.CalculateDistance(location, user.Coordinates)
 		log.Println(distance, user.UserName)
 		if distance <= radius {
 			filteredUsers = append(filteredUsers, user)
@@ -54,27 +54,4 @@ func (s *service) SearchUsers(ctx context.Context, location *types.Coordinate, r
 	}
 
 	return filteredUsers, nil
-}
-
-// calculateDistance computes the distance between two coordinates using the Haversine formula.
-func calculateDistance(coord1, coord2 *types.Coordinate) float64 {
-	const earthRadius = 6371 // Earth's radius in kilometers
-
-	lat1, lon1 := degreesToRadians(coord1.Latitude), degreesToRadians(coord1.Longitude)
-	lat2, lon2 := degreesToRadians(coord2.Latitude), degreesToRadians(coord2.Longitude)
-
-	deltaLat := lat2 - lat1
-	deltaLon := lon2 - lon1
-
-	a := math.Sin(deltaLat/2)*math.Sin(deltaLat/2) +
-		math.Cos(lat1)*math.Cos(lat2)*math.Sin(deltaLon/2)*math.Sin(deltaLon/2)
-
-	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
-
-	return earthRadius * c
-}
-
-// degreesToRadians converts degrees to radians.
-func degreesToRadians(degrees float64) float64 {
-	return degrees * math.Pi / 180
 }
