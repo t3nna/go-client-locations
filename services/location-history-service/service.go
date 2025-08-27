@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	pb "go-clinet-locations/shared/proto/location"
 	"go-clinet-locations/shared/types"
 	"go-clinet-locations/shared/util"
 	"log"
@@ -16,6 +17,11 @@ type LocationRecord struct {
 type Service struct {
 	history map[string][]*LocationRecord
 	mu      sync.RWMutex
+}
+
+type DistanceRecord struct {
+	distance float64
+	history  []*LocationRecord
 }
 
 func NewService() *Service {
@@ -53,6 +59,8 @@ func (s *Service) RegisterLocation(userId string, coords *types.Coordinate, time
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	log.Println("Registering location...")
+
 	user, ok := s.history[userId]
 	if !ok {
 		s.history[userId] = []*LocationRecord{
@@ -69,14 +77,18 @@ func (s *Service) RegisterLocation(userId string, coords *types.Coordinate, time
 		Timestamp:  timestamp,
 	},
 	)
+	s.history[userId] = user
 
 	return user, nil
 }
 
-func (s *Service) CalculateDistance(userId string, startDate time.Time, endDate time.Time) (float64, error) {
+func (s *Service) CalculateDistance(userId string, startDate time.Time, endDate time.Time) (*DistanceRecord, error) {
 	user, ok := s.history[userId]
 	if !ok {
-		return 0.0, fmt.Errorf("there is no user with such id: %v", userId)
+		return &DistanceRecord{
+			distance: 0.0,
+			history:  nil,
+		}, fmt.Errorf("there is no user with such id: %v", userId)
 	}
 
 	var totalDistance float64
@@ -91,7 +103,10 @@ func (s *Service) CalculateDistance(userId string, startDate time.Time, endDate 
 	}
 
 	if lastValidRecord == nil {
-		return 0.0, nil
+		return &DistanceRecord{
+			distance: 0.0,
+			history:  user,
+		}, nil
 	}
 
 	for i := 1; i < len(user); i++ {
@@ -108,5 +123,26 @@ func (s *Service) CalculateDistance(userId string, startDate time.Time, endDate 
 	}
 
 	log.Println("Total distance:", totalDistance)
-	return totalDistance, nil
+	return &DistanceRecord{
+		distance: totalDistance,
+		history:  user,
+	}, nil
+}
+
+func (d *DistanceRecord) ToProto() *pb.CalculateDistanceResponse {
+	var protoLocationRecords []*pb.LocationRecord
+	for _, u := range d.history {
+		protoLocationRecords = append(protoLocationRecords, &pb.LocationRecord{
+			Coordinate: &pb.Coordinate{
+				Latitude:  u.Coordinate.Latitude,
+				Longitude: u.Coordinate.Longitude,
+			},
+			Timestamp: u.Timestamp.String(),
+		},
+		)
+	}
+	return &pb.CalculateDistanceResponse{
+		Distance: d.distance,
+		History:  protoLocationRecords,
+	}
 }

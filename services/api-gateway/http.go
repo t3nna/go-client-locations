@@ -113,7 +113,6 @@ func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	// TODO: move timestamp to location service
 	now := time.Now()
 	isoNow := now.Format(time.RFC3339)
 
@@ -231,27 +230,25 @@ func HandleCalculateDistance(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "userId is missing", http.StatusBadRequest)
 	}
 
-	if len(startTime) != 1 {
+	// start and end time are optional
+	var startTimeParam string
+	var endTimeParam string
+	if len(startTime) > 1 {
 		http.Error(w, "something wrong with startTime param", http.StatusBadRequest)
 		return
 	}
-
-	if startTime[0] == "" {
-		http.Error(w, "startTime is missing", http.StatusBadRequest)
-		return
+	if len(startTime) == 1 {
+		startTimeParam = startTime[0]
 	}
 
-	if len(endTime) != 1 {
+	if len(endTime) > 1 {
 		http.Error(w, "something wrong with endTime param", http.StatusBadRequest)
 		return
 	}
 
-	if endTime[0] == "" {
-		http.Error(w, "endTime is missing", http.StatusBadRequest)
-		return
+	if len(endTime) == 1 {
+		endTimeParam = endTime[0]
 	}
-
-	// TODO make start and end time optional
 
 	userService, err := grpc_clients.NewLocationServiceClient()
 
@@ -263,8 +260,8 @@ func HandleCalculateDistance(w http.ResponseWriter, r *http.Request) {
 
 	distance, err := userService.Client.CalculateDistance(r.Context(), &pb_loction.CalculateDistanceRequest{
 		UserId:    userId[0],
-		StartDate: startTime[0],
-		EndDate:   endTime[0],
+		StartDate: startTimeParam,
+		EndDate:   endTimeParam,
 	})
 	if err != nil {
 		log.Printf("Failed to calculate distance: %v", err)
@@ -292,7 +289,7 @@ func handleRegisterLocation(ctx context.Context, req *pb_loction.RegisterLocatio
 		return err
 	}
 
-	log.Println(newLocationRecord)
+	log.Printf("location record:\n %+v", newLocationRecord)
 
 	return nil
 }

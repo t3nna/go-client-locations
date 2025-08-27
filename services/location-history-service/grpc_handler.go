@@ -59,25 +59,43 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 }
 
 func (h *grpcHandler) CalculateDistance(ctx context.Context, req *pb.CalculateDistanceRequest) (*pb.CalculateDistanceResponse, error) {
+	var startDate string
+	var endDate string
 
 	isoLayout := time.RFC3339
-	startDate, err := time.Parse(isoLayout, req.GetStartDate())
+
+	now := time.Now()
+	if req.GetStartDate() != "" {
+		startDate = req.GetStartDate()
+		if req.GetEndDate() == "" {
+			endDate = now.Format(isoLayout)
+		} else {
+			endDate = req.GetEndDate()
+		}
+	}
+
+	if req.GetStartDate() == "" && req.GetEndDate() == "" {
+		log.Println("Both empty")
+		startDate = now.Add(-1 * 24 * time.Hour).Format(isoLayout)
+		endDate = now.Format(isoLayout)
+	}
+
+	startDateParam, err := time.Parse(isoLayout, startDate)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to parse startDate: %v", err)
 	}
-	endDate, err := time.Parse(isoLayout, req.GetEndDate())
+
+	endDateParam, err := time.Parse(isoLayout, endDate)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to parse endDate: %v", err)
 	}
 	log.Println(startDate, endDate)
 
-	distance, err := h.service.CalculateDistance(req.GetUserId(), startDate, endDate)
+	distance, err := h.service.CalculateDistance(req.GetUserId(), startDateParam, endDateParam)
 	if err != nil {
 
 		return nil, status.Errorf(codes.Internal, "faild to calculate Distance: %v", err)
 	}
 
-	return &pb.CalculateDistanceResponse{
-		Distance: distance,
-	}, nil
+	return distance.ToProto(), nil
 }

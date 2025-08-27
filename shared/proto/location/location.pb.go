@@ -196,6 +196,7 @@ func (x *CalculateDistanceRequest) GetEndDate() string {
 type CalculateDistanceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Distance      float64                `protobuf:"fixed64,1,opt,name=distance,proto3" json:"distance,omitempty"`
+	History       []*LocationRecord      `protobuf:"bytes,2,rep,name=history,proto3" json:"history,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -235,6 +236,13 @@ func (x *CalculateDistanceResponse) GetDistance() float64 {
 		return x.Distance
 	}
 	return 0
+}
+
+func (x *CalculateDistanceResponse) GetHistory() []*LocationRecord {
+	if x != nil {
+		return x.History
+	}
+	return nil
 }
 
 type LocationRecord struct {
@@ -358,9 +366,10 @@ const file_location_proto_rawDesc = "" +
 	"\x18CalculateDistanceRequest\x12\x16\n" +
 	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1c\n" +
 	"\tstartDate\x18\x02 \x01(\tR\tstartDate\x12\x18\n" +
-	"\aendDate\x18\x03 \x01(\tR\aendDate\"7\n" +
+	"\aendDate\x18\x03 \x01(\tR\aendDate\"k\n" +
 	"\x19CalculateDistanceResponse\x12\x1a\n" +
-	"\bdistance\x18\x01 \x01(\x01R\bdistance\"d\n" +
+	"\bdistance\x18\x01 \x01(\x01R\bdistance\x122\n" +
+	"\ahistory\x18\x02 \x03(\v2\x18.location.LocationRecordR\ahistory\"d\n" +
 	"\x0eLocationRecord\x124\n" +
 	"\n" +
 	"coordinate\x18\x01 \x01(\v2\x14.location.CoordinateR\n" +
@@ -398,16 +407,17 @@ var file_location_proto_goTypes = []any{
 var file_location_proto_depIdxs = []int32{
 	5, // 0: location.RegisterLocationRequest.coordinate:type_name -> location.Coordinate
 	4, // 1: location.RegisterLocationResponse.locationRecords:type_name -> location.LocationRecord
-	5, // 2: location.LocationRecord.coordinate:type_name -> location.Coordinate
-	0, // 3: location.LocationService.RegisterLocation:input_type -> location.RegisterLocationRequest
-	2, // 4: location.LocationService.CalculateDistance:input_type -> location.CalculateDistanceRequest
-	1, // 5: location.LocationService.RegisterLocation:output_type -> location.RegisterLocationResponse
-	3, // 6: location.LocationService.CalculateDistance:output_type -> location.CalculateDistanceResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 2: location.CalculateDistanceResponse.history:type_name -> location.LocationRecord
+	5, // 3: location.LocationRecord.coordinate:type_name -> location.Coordinate
+	0, // 4: location.LocationService.RegisterLocation:input_type -> location.RegisterLocationRequest
+	2, // 5: location.LocationService.CalculateDistance:input_type -> location.CalculateDistanceRequest
+	1, // 6: location.LocationService.RegisterLocation:output_type -> location.RegisterLocationResponse
+	3, // 7: location.LocationService.CalculateDistance:output_type -> location.CalculateDistanceResponse
+	6, // [6:8] is the sub-list for method output_type
+	4, // [4:6] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_location_proto_init() }

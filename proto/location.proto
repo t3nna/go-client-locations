@@ -28,6 +28,7 @@ message CalculateDistanceRequest{
 
 message CalculateDistanceResponse{
   double distance = 1;
+  repeated LocationRecord history = 2;
 }
 
 message LocationRecord{
