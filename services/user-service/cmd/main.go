@@ -17,11 +17,25 @@ import (
 var GrpcAddr = ":9093"
 
 func main() {
-	inmemRepo := repository.NewInmemRepository()
-	svc := service.NewService(inmemRepo)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	// Initialize MongoDB
+	mongoClient, err := db.NewMongoClient(ctx, db.NewMongoDefaultConfig())
+	if err != nil {
+		log.Fatalf("Failed to initialize MongoDB, err: %v", err)
+	}
+	defer mongoClient.Disconnect(ctx)
+
+	mongoDb := db.GetDatabase(mongoClient, db.NewMongoDefaultConfig())
+	mongoDbRepo := repository.NewMongoRepository(mongoDb)
+
+	log.Printf(mongoDb.Name())
+
+	//inmemRepo := repository.NewInmemRepository()
+	//svc := service.NewService(inmemRepo)
+	svc := service.NewService(mongoDbRepo)
 
 	go func() {
 		sigCh := make(chan os.Signal, 1)
@@ -38,17 +52,6 @@ func main() {
 
 	grpcServer := grpcserver.NewServer()
 	grpc.NewGRPCHandler(grpcServer, svc)
-
-	// Initialize MongoDB
-	mongoClient, err := db.NewMongoClient(ctx, db.NewMongoDefaultConfig())
-	if err != nil {
-		log.Fatalf("Failed to initialize MongoDB, err: %v", err)
-	}
-	defer mongoClient.Disconnect(ctx)
-
-	mongoDb := db.GetDatabase(mongoClient, db.NewMongoDefaultConfig())
-
-	log.Printf(mongoDb.Name())
 
 	log.Println("Starting gRPC server Trip service on port ", lis.Addr().String())
 

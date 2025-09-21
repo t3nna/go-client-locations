@@ -4,12 +4,14 @@ import (
 	"context"
 	pb "go-clinet-locations/shared/proto/user"
 	"go-clinet-locations/shared/types"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type UserModel struct {
-	UserId      string
-	UserName    string
-	Coordinates *types.Coordinate
+	ID          primitive.ObjectID `bson:"_id,omitempty"`
+	UserId      string             `bson:"userId"`
+	UserName    string             `bson:"userName"`
+	Coordinates *types.Coordinate  `bson:"coordinates"`
 }
 
 type UserRepository interface {
