@@ -23,7 +23,7 @@ const (
 
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=userId,proto3" json:"userId,omitempty"`
+	ID            string                 `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	UserName      string                 `protobuf:"bytes,2,opt,name=userName,proto3" json:"userName,omitempty"`
 	Coordinate    *Coordinate            `protobuf:"bytes,3,opt,name=coordinate,proto3" json:"coordinate,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -60,9 +60,9 @@ func (*User) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *User) GetUserId() string {
+func (x *User) GetID() string {
 	if x != nil {
-		return x.UserId
+		return x.ID
 	}
 	return ""
 }
@@ -374,9 +374,9 @@ var File_user_proto protoreflect.FileDescriptor
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\x04user\"l\n" +
-	"\x04User\x12\x16\n" +
-	"\x06userId\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
+	"user.proto\x12\x04user\"d\n" +
+	"\x04User\x12\x0e\n" +
+	"\x02ID\x18\x01 \x01(\tR\x02ID\x12\x1a\n" +
 	"\buserName\x18\x02 \x01(\tR\buserName\x120\n" +
 	"\n" +
 	"coordinate\x18\x03 \x01(\v2\x10.user.CoordinateR\n" +

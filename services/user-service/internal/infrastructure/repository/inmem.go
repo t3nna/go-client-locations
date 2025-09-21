@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go-clinet-locations/services/user-service/internal/domain"
 	"go-clinet-locations/shared/types"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"sync"
 )
 
@@ -19,7 +20,7 @@ func NewInmemRepository() *inmemRepository {
 			// Magnolia
 			"user1": {
 				UserName: "Ivan",
-				UserId:   "user1",
+				ID:       primitive.NewObjectID(),
 				Coordinates: &types.Coordinate{
 					Latitude:  51.11822470712269,
 					Longitude: 16.990711729269563,
@@ -28,7 +29,7 @@ func NewInmemRepository() *inmemRepository {
 			// Warsaw
 			"user2": {
 				UserName: "Igor",
-				UserId:   "user2",
+				ID:       primitive.NewObjectID(),
 				Coordinates: &types.Coordinate{
 					Latitude:  52.23553956649786,
 					Longitude: 20.984595191389918,
@@ -38,7 +39,7 @@ func NewInmemRepository() *inmemRepository {
 			// Kyiv
 			"user3": {
 				UserName: "Den",
-				UserId:   "user3",
+				ID:       primitive.NewObjectID(),
 				Coordinates: &types.Coordinate{
 					Latitude:  50.53401932980686,
 					Longitude: 31.178889172903055,
@@ -47,7 +48,7 @@ func NewInmemRepository() *inmemRepository {
 			//Biskupin
 			"user4": {
 				UserName: "Kate",
-				UserId:   "user4",
+				ID:       primitive.NewObjectID(),
 				Coordinates: &types.Coordinate{
 					Latitude:  51.10181370006046,
 					Longitude: 17.10312341673202,
@@ -56,7 +57,7 @@ func NewInmemRepository() *inmemRepository {
 			// T6
 			"user5": {
 				UserName: "Barbara",
-				UserId:   "user5",
+				ID:       primitive.NewObjectID(),
 				Coordinates: &types.Coordinate{
 					Latitude:  51.11956092410769,
 					Longitude: 17.05696305051491,
@@ -70,7 +71,7 @@ func (r *inmemRepository) CreateUser(ctx context.Context, user *domain.UserModel
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	r.users[user.UserId] = user
+	r.users[user.ID.String()] = user
 	return user, nil
 }
 func (r *inmemRepository) UpdateUser(ctx context.Context, userName string, coordinates *types.Coordinate) (*domain.UserModel, error) {
@@ -81,7 +82,7 @@ func (r *inmemRepository) UpdateUser(ctx context.Context, userName string, coord
 		if user.UserName == userName {
 
 			updatedUser := &domain.UserModel{
-				UserId:      user.UserId,
+				ID:          user.ID,
 				UserName:    user.UserName,
 				Coordinates: coordinates,
 			}

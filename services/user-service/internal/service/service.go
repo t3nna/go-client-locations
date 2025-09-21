@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"go-clinet-locations/services/user-service/internal/domain"
 	"go-clinet-locations/shared/types"
 	"go-clinet-locations/shared/util"
@@ -20,13 +19,7 @@ func NewService(repo domain.UserRepository) *service {
 }
 
 func (s *service) CreateUser(ctx context.Context, user *domain.UserModel) (*domain.UserModel, error) {
-	newUUID, err := uuid.NewRandom()
-	if err != nil {
-		log.Fatalf("failed to generate UUID: %v", err)
-	}
-
 	newUser := &domain.UserModel{
-		UserId:      newUUID.String(),
 		UserName:    user.UserName,
 		Coordinates: user.Coordinates,
 	}

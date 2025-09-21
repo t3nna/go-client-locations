@@ -11,7 +11,7 @@ service UserService {
 }
 
 message User {
-  string userId = 1;
+  string ID = 1;
   string userName = 2;
   Coordinate coordinate = 3;
 }

@@ -69,7 +69,7 @@ func (r *mongoRepository) GetUsers(ctx context.Context) ([]*domain.UserModel, er
 			return nil, fmt.Errorf("failed to decode user: %v", err)
 		}
 		users = append(users, &domain.UserModel{
-			UserId:   user.UserId,
+			ID:       user.ID,
 			UserName: user.UserName,
 			Coordinates: &types.Coordinate{
 				Latitude:  user.Coordinates.Latitude,

@@ -57,7 +57,7 @@ func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// Calling location history service
 	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
-		UserId: newUser.User.UserId,
+		UserId: newUser.User.ID,
 		Coordinate: &pb_loction.Coordinate{
 			Latitude:  newUser.User.Coordinate.Latitude,
 			Longitude: newUser.User.Coordinate.Longitude,
@@ -118,7 +118,7 @@ func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	// Calling location history service
 	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
-		UserId: newUser.User.UserId,
+		UserId: newUser.User.ID,
 		Coordinate: &pb_loction.Coordinate{
 			Latitude:  newUser.User.Coordinate.Latitude,
 			Longitude: newUser.User.Coordinate.Longitude,

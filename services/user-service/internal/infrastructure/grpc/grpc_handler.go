@@ -42,10 +42,10 @@ func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.UpdateUserRequest)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create user %v", err)
 	}
-	log.Printf("user created with id: %v", user.UserId)
+	log.Printf("user created with id: %v", user.ID)
 	return &pb.CreateUserResponse{
 		User: &pb.User{
-			UserId:   user.UserId,
+			ID:       user.ID.String(),
 			UserName: user.UserName,
 			Coordinate: &pb.Coordinate{
 				Latitude:  user.Coordinates.Latitude,
@@ -71,7 +71,7 @@ func (h *grpcHandler) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 
 	return &pb.UpdateUserResponse{
 		User: &pb.User{
-			UserId:   user.UserId,
+			ID:       user.ID.String(),
 			UserName: user.UserName,
 			Coordinate: &pb.Coordinate{
 				Latitude:  user.Coordinates.Latitude,

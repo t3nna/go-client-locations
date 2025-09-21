@@ -9,7 +9,6 @@ import (
 
 type UserModel struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty"`
-	UserId      string             `bson:"userId"`
 	UserName    string             `bson:"userName"`
 	Coordinates *types.Coordinate  `bson:"coordinates"`
 }
@@ -28,7 +27,7 @@ type UserService interface {
 
 func (u *UserModel) ToProto() *pb.User {
 	return &pb.User{
-		UserId:   u.UserId,
+		ID:       u.ID.String(),
 		UserName: u.UserName,
 		Coordinate: &pb.Coordinate{
 			Latitude:  u.Coordinates.Latitude,
