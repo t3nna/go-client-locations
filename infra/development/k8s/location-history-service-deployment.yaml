@@ -24,6 +24,13 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "200m"
+          env:
+          - name: MONGODB_URI
+            valueFrom:
+              secretKeyRef:
+                name: mongodb
+                key: uri
+
 ---
 apiVersion: v1
 kind: Service

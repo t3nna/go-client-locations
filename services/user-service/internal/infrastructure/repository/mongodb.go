@@ -22,8 +22,6 @@ func NewMongoRepository(db *mongo.Database) *mongoRepository {
 	return &mongoRepository{db: db}
 }
 
-// TODO: implement UserRepository interface
-
 func (r *mongoRepository) CreateUser(ctx context.Context, user *domain.UserModel) (*domain.UserModel, error) {
 	result, err := r.db.Collection(db.UserCollection).InsertOne(ctx, user)
 

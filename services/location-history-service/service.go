@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	pb "go-clinet-locations/shared/proto/location"
 	"go-clinet-locations/shared/types"
@@ -10,10 +11,6 @@ import (
 	"time"
 )
 
-type LocationRecord struct {
-	Coordinate *types.Coordinate
-	Timestamp  time.Time
-}
 type Service struct {
 	history map[string][]*LocationRecord
 	mu      sync.RWMutex
@@ -55,7 +52,7 @@ func NewService() *Service {
 	}
 }
 
-func (s *Service) RegisterLocation(userId string, coords *types.Coordinate, timestamp time.Time) ([]*LocationRecord, error) {
+func (s *Service) RegisterLocation(ctx context.Context, userId string, coords *types.Coordinate, timestamp time.Time) ([]*LocationRecord, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -82,7 +79,7 @@ func (s *Service) RegisterLocation(userId string, coords *types.Coordinate, time
 	return user, nil
 }
 
-func (s *Service) CalculateDistance(userId string, startDate time.Time, endDate time.Time) (*DistanceRecord, error) {
+func (s *Service) CalculateDistance(ctx context.Context, userId string, startDate time.Time, endDate time.Time) (*DistanceRecord, error) {
 	user, ok := s.history[userId]
 	if !ok {
 		return &DistanceRecord{

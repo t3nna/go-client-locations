@@ -12,11 +12,11 @@ import (
 )
 
 type grpcHandler struct {
-	service *Service
+	service LocationsService
 	pb.UnimplementedLocationServiceServer
 }
 
-func NewGrpcHandler(s *grpc.Server, service *Service) {
+func NewGrpcHandler(s *grpc.Server, service LocationsService) {
 	handler := &grpcHandler{
 		service: service,
 	}
@@ -34,7 +34,7 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 		return nil, status.Errorf(codes.Internal, "failed to parse timestamp: %v", err)
 	}
 
-	locationRecords, err := h.service.RegisterLocation(req.UserId, coords, timestamp)
+	locationRecords, err := h.service.RegisterLocation(ctx, req.UserId, coords, timestamp)
 
 	locationRecordsProto := make([]*pb.LocationRecord, len(locationRecords))
 
@@ -49,7 +49,7 @@ func (h *grpcHandler) RegisterLocation(ctx context.Context, req *pb.RegisterLoca
 	}
 
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to Register Location")
+		return nil, status.Errorf(codes.Internal, "failed to Register Location %v", err)
 	}
 
 	return &pb.RegisterLocationResponse{
@@ -91,7 +91,7 @@ func (h *grpcHandler) CalculateDistance(ctx context.Context, req *pb.CalculateDi
 	}
 	log.Println(startDate, endDate)
 
-	distance, err := h.service.CalculateDistance(req.GetUserId(), startDateParam, endDateParam)
+	distance, err := h.service.CalculateDistance(ctx, req.GetUserId(), startDateParam, endDateParam)
 	if err != nil {
 
 		return nil, status.Errorf(codes.Internal, "faild to calculate Distance: %v", err)

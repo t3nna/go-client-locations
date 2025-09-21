@@ -45,7 +45,7 @@ func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.UpdateUserRequest)
 	log.Printf("user created with id: %v", user.ID)
 	return &pb.CreateUserResponse{
 		User: &pb.User{
-			ID:       user.ID.String(),
+			ID:       user.ID.Hex(),
 			UserName: user.UserName,
 			Coordinate: &pb.Coordinate{
 				Latitude:  user.Coordinates.Latitude,
@@ -71,7 +71,7 @@ func (h *grpcHandler) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 
 	return &pb.UpdateUserResponse{
 		User: &pb.User{
-			ID:       user.ID.String(),
+			ID:       user.ID.Hex(),
 			UserName: user.UserName,
 			Coordinate: &pb.Coordinate{
 				Latitude:  user.Coordinates.Latitude,

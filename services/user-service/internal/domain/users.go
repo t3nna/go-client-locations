@@ -27,7 +27,7 @@ type UserService interface {
 
 func (u *UserModel) ToProto() *pb.User {
 	return &pb.User{
-		ID:       u.ID.String(),
+		ID:       u.ID.Hex(),
 		UserName: u.UserName,
 		Coordinate: &pb.Coordinate{
 			Latitude:  u.Coordinates.Latitude,

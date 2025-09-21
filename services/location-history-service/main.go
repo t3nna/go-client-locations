@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"go-clinet-locations/shared/db"
 	grpcserver "google.golang.org/grpc"
 	"log"
 	"net"
@@ -29,11 +30,22 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+	// Initialize MongoDB
+	mongoClient, err := db.NewMongoClient(ctx, db.NewMongoDefaultConfig())
+	if err != nil {
+		log.Fatalf("Failed to initialize MongoDB, err: %v", err)
+	}
+	defer mongoClient.Disconnect(ctx)
 
-	svc := NewService()
+	mongoDb := db.GetDatabase(mongoClient, db.NewMongoDefaultConfig())
+	mongoDbRepo := NewMongoService(mongoDb)
+
+	log.Printf(mongoDb.Name())
+
+	//svc := NewService()
 	//// starting the grpcServer
 	grpcServer := grpcserver.NewServer()
-	NewGrpcHandler(grpcServer, svc)
+	NewGrpcHandler(grpcServer, mongoDbRepo)
 
 	log.Println("Starting gRPC server Location service on port ", lis.Addr().String())
 

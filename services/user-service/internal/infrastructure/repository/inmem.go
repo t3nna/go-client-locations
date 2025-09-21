@@ -71,7 +71,7 @@ func (r *inmemRepository) CreateUser(ctx context.Context, user *domain.UserModel
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	r.users[user.ID.String()] = user
+	r.users[user.ID.Hex()] = user
 	return user, nil
 }
 func (r *inmemRepository) UpdateUser(ctx context.Context, userName string, coordinates *types.Coordinate) (*domain.UserModel, error) {
