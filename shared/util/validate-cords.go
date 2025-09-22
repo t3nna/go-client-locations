@@ -1,17 +1,29 @@
 package util
 
-import "errors"
+import (
+	"errors"
+	"regexp"
+	"strconv"
+)
 
-func ValidateCords(lat float64, lon float64) error {
-	// Check if latitude is within the valid range of -90 to +90.
-	if lat < -90 || lat > 90 {
+func ValidateCords(latitude, longitude float64) error {
+	if latitude < -90 || latitude > 90 {
 		return errors.New("latitude must be between -90 and 90")
 	}
 
-	// Check if longitude is within the valid range of -180 to +180.
-	if lon < -180 || lon > 180 {
+	if longitude < -180 || longitude > 180 {
 		return errors.New("longitude must be between -180 and 180")
 	}
 
+	latStr := regexp.MustCompile(`^-?\d+(\.\d{1,8})?$`)
+	lonStr := regexp.MustCompile(`^-?\d+(\.\d{1,8})?$`)
+
+	if !latStr.MatchString(formatFloat(latitude)) || !lonStr.MatchString(formatFloat(longitude)) {
+		return errors.New("coordinates must have up to 8 decimal places")
+	}
+
 	return nil
+}
+func formatFloat(value float64) string {
+	return strconv.FormatFloat(value, 'f', -1, 64)
 }

@@ -26,8 +26,8 @@ func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 
 	// validation
 
-	if reqBody.UserName == "" {
-		http.Error(w, "failed to parse JSON data", http.StatusBadRequest)
+	if err := util.ValidateUserName(reqBody.UserName); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
