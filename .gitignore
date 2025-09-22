@@ -57,12 +57,14 @@ dist-ssr
 # Tilt build
 build/
 
-# Cursor
-.cursorrules
-
 # Secrets
 secrets.yaml
 
 # Web
 # Is removed until implemented
 /web
+
+# Tests
+coverage.html
+coverage.out
+

@@ -1,0 +1,44 @@
+# Test Configuration
+# This file contains configuration for running tests
+
+# Test timeouts (in seconds)
+timeouts:
+  unit: 30
+  functional: 60
+  integration: 120
+
+# Test coverage thresholds
+coverage:
+  minimum: 80
+  target: 90
+
+# Integration test requirements
+integration:
+  services:
+    - api-gateway
+    - user-service
+    - location-history-service
+  databases:
+    - mongodb
+  ports:
+    api-gateway: 8004
+    user-service: 9093
+    location-history-service: 9092
+
+# Test data
+test_data:
+  users:
+    - username: "testuser1"
+      coordinates:
+        latitude: 51.11822470712269
+        longitude: 16.990711729269563
+    - username: "testuser2"
+      coordinates:
+        latitude: 52.23553956649786
+        longitude: 20.984595191389918
+
+# Mock configurations
+mocks:
+  grpc_clients: true
+  database: true
+  external_services: true

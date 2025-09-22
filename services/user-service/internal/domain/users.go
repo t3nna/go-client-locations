@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	pb "go-clinet-locations/shared/proto/user"
 	"go-clinet-locations/shared/types"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,6 +25,11 @@ type UserService interface {
 	UpdateUser(ctx context.Context, userName string, coordinates *types.Coordinate) (*UserModel, error)
 	SearchUsers(ctx context.Context, location *types.Coordinate, radius float64) ([]*UserModel, error)
 }
+
+// Common errors
+var (
+	ErrUserNotFound = errors.New("user not found")
+)
 
 func (u *UserModel) ToProto() *pb.User {
 	return &pb.User{
