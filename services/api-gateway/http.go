@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -108,6 +109,11 @@ func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Printf("Failed to update a user: %v", err)
+		// Check if it's a "user not found" error and return 400 Bad Request
+		if strings.Contains(err.Error(), "user not found") {
+			http.Error(w, "User not found", http.StatusBadRequest)
+			return
+		}
 		http.Error(w, "Failed to update a user", http.StatusInternalServerError)
 		return
 

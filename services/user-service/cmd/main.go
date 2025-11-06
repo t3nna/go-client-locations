@@ -6,6 +6,8 @@ import (
 	"go-clinet-locations/services/user-service/internal/infrastructure/repository"
 	"go-clinet-locations/services/user-service/internal/service"
 	"go-clinet-locations/shared/db"
+	"go-clinet-locations/shared/env"
+	"go-clinet-locations/shared/messaging"
 	grpcserver "google.golang.org/grpc"
 	"log"
 	"net"
@@ -17,6 +19,8 @@ import (
 var GrpcAddr = ":9093"
 
 func main() {
+	rabbitMqUri := env.GetString("RABBITMQ_URI",
+		"amqp://guest:guest@rabbitmq:5672/")
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -30,6 +34,15 @@ func main() {
 
 	mongoDb := db.GetDatabase(mongoClient, db.NewMongoDefaultConfig())
 	mongoDbRepo := repository.NewMongoRepository(mongoDb)
+
+	// Rabbit mq
+	conn, err := messaging.NewRabbitMQ(rabbitMqUri)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer conn.Close()
 
 	log.Printf(mongoDb.Name())
 

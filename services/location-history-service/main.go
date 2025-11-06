@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"go-clinet-locations/shared/db"
+	"go-clinet-locations/shared/env"
+	"go-clinet-locations/shared/messaging"
 	grpcserver "google.golang.org/grpc"
 	"log"
 	"net"
@@ -14,6 +16,8 @@ import (
 var GrpcAddr = ":9092"
 
 func main() {
+	rabbitMqUri := env.GetString("RABBITMQ_URI",
+		"amqp://guest:guest@rabbitmq:5672/")
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -30,6 +34,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
 	// Initialize MongoDB
 	mongoClient, err := db.NewMongoClient(ctx, db.NewMongoDefaultConfig())
 	if err != nil {
@@ -41,6 +46,15 @@ func main() {
 	mongoDbRepo := NewMongoService(mongoDb)
 
 	log.Printf(mongoDb.Name())
+
+	// Rabbit mq
+	conn, err := messaging.NewRabbitMQ(rabbitMqUri)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer conn.Close()
 
 	//svc := NewService()
 	//// starting the grpcServer

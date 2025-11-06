@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package location;
 
-option go_package = "shared/proto/location;location";
+option go_package = "shared/proto/location";
 
 service LocationService{
   rpc RegisterLocation(RegisterLocationRequest) returns (RegisterLocationResponse);

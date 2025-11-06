@@ -66,6 +66,10 @@ func (h *grpcHandler) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 
 	user, err := h.service.UpdateUser(ctx, req.GetUserName(), userCords)
 	if err != nil {
+		// Check if the error is "user not found" and return appropriate gRPC status
+		if err.Error() == "user not found" {
+			return nil, status.Errorf(codes.NotFound, "user not found")
+		}
 		return nil, status.Errorf(codes.Internal, "failed to update user %v", err)
 	}
 

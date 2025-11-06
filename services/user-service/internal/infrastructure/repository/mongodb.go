@@ -40,6 +40,10 @@ func (r *mongoRepository) UpdateUser(ctx context.Context, userName string, coord
 
 	result := collection.FindOneAndUpdate(ctx, filter, update, options.FindOneAndUpdate().SetReturnDocument(options.After))
 	if result.Err() != nil {
+		// Check if the error is "no documents in result" which means user doesn't exist
+		if result.Err() == mongo.ErrNoDocuments {
+			return nil, fmt.Errorf("user not found")
+		}
 		return nil, fmt.Errorf("failed to update user: %v", result.Err())
 	}
 
