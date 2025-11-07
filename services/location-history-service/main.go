@@ -56,8 +56,17 @@ func main() {
 
 	defer conn.Close()
 
+	log.Println("Starting RabbitMQ connection")
+
+	consumer := NewUserConsumer(conn)
+	go func() {
+		if err := consumer; err != nil {
+			log.Fatalf("Failed to listen to message: %v", err)
+		}
+	}()
+
 	//svc := NewService()
-	//// starting the grpcServer
+	// starting the grpcServer
 	grpcServer := grpcserver.NewServer()
 	NewGrpcHandler(grpcServer, mongoDbRepo)
 
