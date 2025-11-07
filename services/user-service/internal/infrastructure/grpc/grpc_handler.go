@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"go-clinet-locations/services/user-service/internal/domain"
+	"go-clinet-locations/services/user-service/internal/infrastructure/events"
 	pb "go-clinet-locations/shared/proto/user"
 	"go-clinet-locations/shared/types"
 	"google.golang.org/grpc"
@@ -13,12 +14,14 @@ import (
 
 type grpcHandler struct {
 	pb.UnimplementedUserServiceServer
-	service domain.UserService
+	service   domain.UserService
+	publisher *events.UserEvenPublisher
 }
 
-func NewGRPCHandler(server *grpc.Server, service domain.UserService) *grpcHandler {
+func NewGRPCHandler(server *grpc.Server, service domain.UserService, publisher *events.UserEvenPublisher) *grpcHandler {
 	handler := &grpcHandler{
-		service: service,
+		service:   service,
+		publisher: publisher,
 	}
 
 	pb.RegisterUserServiceServer(server, handler)
@@ -43,6 +46,11 @@ func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.UpdateUserRequest)
 		return nil, status.Errorf(codes.Internal, "failed to create user %v", err)
 	}
 	log.Printf("user created with id: %v", user.ID)
+
+	if err := h.publisher.PublishUserCreated(ctx); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to publish user creation even: %v", err)
+	}
+
 	return &pb.CreateUserResponse{
 		User: &pb.User{
 			ID:       user.ID.Hex(),

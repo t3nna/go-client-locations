@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"go-clinet-locations/services/user-service/internal/infrastructure/events"
 	"go-clinet-locations/services/user-service/internal/infrastructure/grpc"
 	"go-clinet-locations/services/user-service/internal/infrastructure/repository"
 	"go-clinet-locations/services/user-service/internal/service"
@@ -35,6 +36,8 @@ func main() {
 	mongoDb := db.GetDatabase(mongoClient, db.NewMongoDefaultConfig())
 	mongoDbRepo := repository.NewMongoRepository(mongoDb)
 
+	log.Printf(mongoDb.Name())
+
 	// Rabbit mq
 	conn, err := messaging.NewRabbitMQ(rabbitMqUri)
 
@@ -44,7 +47,9 @@ func main() {
 
 	defer conn.Close()
 
-	log.Printf(mongoDb.Name())
+	log.Println("Starting RabbitMQ connection")
+
+	publisher := events.NewUserEventPublisher(conn)
 
 	//inmemRepo := repository.NewInmemRepository()
 	//svc := service.NewService(inmemRepo)
@@ -64,7 +69,7 @@ func main() {
 	}
 
 	grpcServer := grpcserver.NewServer()
-	grpc.NewGRPCHandler(grpcServer, svc)
+	grpc.NewGRPCHandler(grpcServer, svc, publisher)
 
 	log.Println("Starting gRPC server Trip service on port ", lis.Addr().String())
 
