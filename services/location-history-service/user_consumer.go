@@ -20,7 +20,8 @@ func NewUserConsumer(rabbitmq *messaging.RabbitMQ) *userConsumer {
 
 func (c *userConsumer) Listen() error {
 	return c.rabbitmq.ConsumeMessages("hello", func(ctx context.Context, msg amqp091.Delivery) error {
-		log.Printf("driver received message: %v", msg)
+		log.Printf("location management received message: %v", msg)
+
 		return nil
 	})
 }

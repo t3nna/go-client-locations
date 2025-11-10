@@ -5,12 +5,13 @@ import (
 	"go-clinet-locations/shared/db"
 	"go-clinet-locations/shared/env"
 	"go-clinet-locations/shared/messaging"
-	grpcserver "google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
+
+	grpcserver "google.golang.org/grpc"
 )
 
 var GrpcAddr = ":9092"
@@ -60,7 +61,7 @@ func main() {
 
 	consumer := NewUserConsumer(conn)
 	go func() {
-		if err := consumer; err != nil {
+		if err := consumer.Listen(); err != nil {
 			log.Fatalf("Failed to listen to message: %v", err)
 		}
 	}()
