@@ -47,7 +47,13 @@ func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.UpdateUserRequest)
 	}
 	log.Printf("user created with id: %v", user.ID)
 
-	if err := h.publisher.PublishUserCreated(ctx); err != nil {
+	if err := h.publisher.PublishUserCreated(ctx, &types.UserLocation{
+		UserId: user.ID.Hex(),
+		Coordinate: &types.Coordinate{
+			Latitude:  user.Coordinates.Latitude,
+			Longitude: user.Coordinates.Longitude,
+		},
+	}); err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to publish user creation even: %v", err)
 	}
 
