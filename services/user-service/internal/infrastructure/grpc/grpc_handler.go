@@ -54,7 +54,7 @@ func (h *grpcHandler) CreateUser(ctx context.Context, req *pb.UpdateUserRequest)
 			Longitude: user.Coordinates.Longitude,
 		},
 	}); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to publish user creation even: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to publish user location evet: %v", err)
 	}
 
 	return &pb.CreateUserResponse{
@@ -85,6 +85,16 @@ func (h *grpcHandler) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest)
 			return nil, status.Errorf(codes.NotFound, "user not found")
 		}
 		return nil, status.Errorf(codes.Internal, "failed to update user %v", err)
+	}
+
+	if err := h.publisher.PublishUserCreated(ctx, &types.UserLocation{
+		UserId: user.ID.Hex(),
+		Coordinate: &types.Coordinate{
+			Latitude:  user.Coordinates.Latitude,
+			Longitude: user.Coordinates.Longitude,
+		},
+	}); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to publish user location event: %v", err)
 	}
 
 	return &pb.UpdateUserResponse{

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"go-clinet-locations/services/api-gateway/grpc_clients"
 	"go-clinet-locations/shared/contracts"
@@ -12,7 +11,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
@@ -53,25 +51,6 @@ func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	//now := time.Now()
-	//isoNow := now.Format(time.RFC3339)
-
-	// Calling location history service
-	/*	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
-			UserId: newUser.User.ID,
-			Coordinate: &pb_loction.Coordinate{
-				Latitude:  newUser.User.Coordinate.Latitude,
-				Longitude: newUser.User.Coordinate.Longitude,
-			},
-			Timestamp: isoNow,
-		})
-
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-
-		}
-	*/
 	response := contracts.APIResponse{Data: newUser}
 
 	writeJSON(w, http.StatusOK, response)
@@ -115,25 +94,6 @@ func HandleUpdateUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		http.Error(w, "Failed to update a user", http.StatusInternalServerError)
-		return
-
-	}
-
-	now := time.Now()
-	isoNow := now.Format(time.RFC3339)
-
-	// Calling location history service
-	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
-		UserId: newUser.User.ID,
-		Coordinate: &pb_loction.Coordinate{
-			Latitude:  newUser.User.Coordinate.Latitude,
-			Longitude: newUser.User.Coordinate.Longitude,
-		},
-		Timestamp: isoNow,
-	})
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 
 	}
@@ -280,22 +240,4 @@ func HandleCalculateDistance(w http.ResponseWriter, r *http.Request) {
 
 	writeJSON(w, http.StatusOK, res)
 
-}
-
-func handleRegisterLocation(ctx context.Context, req *pb_loction.RegisterLocationRequest) error {
-	locationService, err := grpc_clients.NewLocationServiceClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer locationService.Close()
-	newLocationRecord, err := locationService.Client.RegisterLocation(ctx, req)
-
-	if err != nil {
-		log.Printf("Failed to register user location: %v", err)
-		return err
-	}
-
-	log.Printf("location record:\n %+v", newLocationRecord)
-
-	return nil
 }

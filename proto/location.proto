@@ -5,19 +5,7 @@ package location;
 option go_package = "shared/proto/location";
 
 service LocationService{
-  rpc RegisterLocation(RegisterLocationRequest) returns (RegisterLocationResponse);
   rpc CalculateDistance(CalculateDistanceRequest) returns (CalculateDistanceResponse);
-}
-
-message RegisterLocationRequest{
-  string userId = 1;
-  Coordinate coordinate = 2;
-  string timestamp = 3;
-}
-
-message RegisterLocationResponse{
-  string userId = 1;
-  repeated LocationRecord locationRecords = 2;
 }
 
 message CalculateDistanceRequest{
