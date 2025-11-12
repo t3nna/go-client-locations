@@ -24,7 +24,7 @@ func (p *UserEvenPublisher) PublishUserCreated(ctx context.Context, userLocation
 		return err
 	}
 
-	return p.rabbitmq.PublishMessage(ctx, messaging.UserEvenCreatedBind, contracts.AmqpMessage{
+	return p.rabbitmq.PublishMessage(ctx, messaging.RegisterLocationEventBind, contracts.AmqpMessage{
 		OwnerID: userLocation.UserId,
 		Data:    userEventJSON,
 	})

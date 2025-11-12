@@ -59,7 +59,7 @@ func main() {
 
 	log.Println("Starting RabbitMQ connection")
 
-	consumer := NewUserConsumer(conn)
+	consumer := NewUserConsumer(conn, mongoDbRepo)
 	go func() {
 		if err := consumer.Listen(); err != nil {
 			log.Fatalf("Failed to listen to message: %v", err)

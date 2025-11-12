@@ -137,7 +137,7 @@ func (r *RabbitMQ) setupExchangesAndQueues() error {
 	if err := r.declareAndBindQueue(
 		SaveUserLocationQueue,
 		[]string{
-			UserEvenCreatedBind,
+			RegisterLocationEventBind,
 		},
 		UserExchange,
 	); err != nil {

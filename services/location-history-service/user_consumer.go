@@ -6,18 +6,23 @@ import (
 	"go-clinet-locations/shared/contracts"
 	"go-clinet-locations/shared/messaging"
 	"go-clinet-locations/shared/types"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
+	"time"
 
 	"github.com/rabbitmq/amqp091-go"
 )
 
 type userConsumer struct {
 	rabbitmq *messaging.RabbitMQ
+	service  LocationsService
 }
 
-func NewUserConsumer(rabbitmq *messaging.RabbitMQ) *userConsumer {
+func NewUserConsumer(rabbitmq *messaging.RabbitMQ, service LocationsService) *userConsumer {
 	return &userConsumer{
 		rabbitmq: rabbitmq,
+		service:  service,
 	}
 }
 
@@ -36,6 +41,15 @@ func (c *userConsumer) Listen() error {
 		}
 
 		log.Printf("user data received: %+v", payload)
+
+		now := time.Now()
+
+		locationRecords, err := c.service.RegisterLocation(ctx, payload.UserId, payload.Coordinate, now)
+
+		if err != nil {
+			return status.Errorf(codes.Internal, "failed to Register Location %v", err)
+		}
+		log.Printf("%+v", locationRecords)
 
 		return nil
 	})

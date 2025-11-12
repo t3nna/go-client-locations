@@ -53,25 +53,25 @@ func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	now := time.Now()
-	isoNow := now.Format(time.RFC3339)
+	//now := time.Now()
+	//isoNow := now.Format(time.RFC3339)
 
 	// Calling location history service
-	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
-		UserId: newUser.User.ID,
-		Coordinate: &pb_loction.Coordinate{
-			Latitude:  newUser.User.Coordinate.Latitude,
-			Longitude: newUser.User.Coordinate.Longitude,
-		},
-		Timestamp: isoNow,
-	})
+	/*	err = handleRegisterLocation(r.Context(), &pb_loction.RegisterLocationRequest{
+			UserId: newUser.User.ID,
+			Coordinate: &pb_loction.Coordinate{
+				Latitude:  newUser.User.Coordinate.Latitude,
+				Longitude: newUser.User.Coordinate.Longitude,
+			},
+			Timestamp: isoNow,
+		})
 
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 
-	}
-
+		}
+	*/
 	response := contracts.APIResponse{Data: newUser}
 
 	writeJSON(w, http.StatusOK, response)

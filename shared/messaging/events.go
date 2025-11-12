@@ -5,5 +5,5 @@ const (
 )
 
 const (
-	UserEvenCreatedBind = "user.event.created"
+	RegisterLocationEventBind = "location.event.register"
 )
